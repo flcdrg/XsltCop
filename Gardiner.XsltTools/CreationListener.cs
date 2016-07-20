@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using Gardiner.XsltTools.ErrorList;
 using Microsoft.VisualStudio.Editor;
@@ -29,14 +31,22 @@ namespace Gardiner.XsltTools
             if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out document))
             {
                 string fileName = Path.GetFileName(document.FilePath);
+                Debug.WriteLine(fileName);
 
-/*                if (fileName.Equals(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
-                    document.FileActionOccurred += DocumentSaved;*/
 
-            TableDataSource.Instance.AddErrors(new AccessibilityResult()
-            {
-                Project = "My Project", Url = "http://localhost"
-            });
+                /*                if (fileName.Equals(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
+                                    document.FileActionOccurred += DocumentSaved;*/
+
+                TableDataSource.Instance.AddErrors(new AccessibilityResult()
+                {
+                    Project = "My Project",
+                    Url = "http://localhost",
+                    Violations = new List<Rule>() { new Rule()
+                    {
+                        Column = 1, Description = "ah", FileName = fileName
+                    } }
+                    
+                });
             }
         }
 
@@ -44,7 +54,7 @@ namespace Gardiner.XsltTools
         {
             if (e.FileActionType == FileActionTypes.ContentSavedToDisk)
             {
-                TableDataSource.Instance.CleanAllErrors();
+                //TableDataSource.Instance.CleanAllErrors();
                 //CheckerExtension.Instance.CheckA11y();
             }
         }

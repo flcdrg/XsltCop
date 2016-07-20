@@ -55,7 +55,7 @@ namespace Gardiner.XsltTools.ErrorList
 
         public string Identifier
         {
-            get { return PackageGuids.guidPackageString; }
+            get { return "8339E980-B78E-48EF-A9A5-C8BA7947A37B"; }
         }
 
         public string DisplayName

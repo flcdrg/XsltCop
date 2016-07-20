@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.Shell;
+﻿using System;
+using System.Collections.Generic;
+using EnvDTE;
 using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Gardiner.XsltTools.ErrorList
@@ -7,11 +8,9 @@ namespace Gardiner.XsltTools.ErrorList
     class TableEntriesSnapshot : TableEntriesSnapshotBase
     {
         private string _projectName;
-        private DTE2 _dte;
 
         internal TableEntriesSnapshot(AccessibilityResult result)
         {
-            _dte = (DTE2)Package.GetGlobalService(typeof(DTE));
             _projectName = result.Project;
             Errors.AddRange(result.Violations);
             Url = result.Url;
@@ -64,10 +63,12 @@ namespace Gardiner.XsltTools.ErrorList
                               "URL: " + Url + "\r\n" +
                               "HTML: " + Errors[index].Html;
                 }
+/*
                 else if (columnName == StandardTableKeyNames.PriorityImage || columnName == StandardTableKeyNames.ErrorSeverityImage)
                 {
                     content = KnownMonikers.Accessibility;
                 }
+*/
                 else if (columnName == StandardTableKeyNames.ErrorSeverity)
                 {
                     content = Errors[index].GetSeverity();

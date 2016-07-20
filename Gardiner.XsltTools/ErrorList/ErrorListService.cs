@@ -9,7 +9,7 @@ namespace Gardiner.XsltTools.ErrorList
         {
             TableDataSource.Instance.CleanErrors(result.Url);
 
-            if (!VSPackage.Options.ShowWarnings)
+/*            if (!VSPackage.Options.ShowWarnings)
             {
                result.Violations = result.Violations.Where(r => r.GetSeverity() != __VSERRORCATEGORY.EC_WARNING);
             }
@@ -17,7 +17,7 @@ namespace Gardiner.XsltTools.ErrorList
             if (!VSPackage.Options.ShowMessages)
             {
                 result.Violations = result.Violations.Where(r => r.GetSeverity() != __VSERRORCATEGORY.EC_MESSAGE);
-            }
+            }*/
 
             if (result.Violations.Any())
             {
