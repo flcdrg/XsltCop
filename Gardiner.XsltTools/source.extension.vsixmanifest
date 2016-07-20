@@ -2,8 +2,8 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="Gardiner.XsltTools.David Gardiner.9f30a511-362f-4ebe-bc2d-4b987c1b9a96" Version="1.0" Language="en-US" Publisher="David Gardiner" />
-    <DisplayName>Gardiner.XsltTools</DisplayName>
-    <Description>Empty VSIX Project.</Description>
+    <DisplayName>XsltTools</DisplayName>
+    <Description xml:space="preserve">Various tools to enhance editing and checking XSLT files</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
