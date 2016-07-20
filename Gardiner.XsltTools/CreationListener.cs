@@ -33,6 +33,7 @@ namespace Gardiner.XsltTools
                 string fileName = Path.GetFileName(document.FilePath);
                 Debug.WriteLine(fileName);
 
+                document.FileActionOccurred += DocumentSaved;
 
                 /*                if (fileName.Equals(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
                                     document.FileActionOccurred += DocumentSaved;*/
@@ -52,9 +53,10 @@ namespace Gardiner.XsltTools
 
         private void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
         {
-            if (e.FileActionType == FileActionTypes.ContentSavedToDisk)
+            if (e.FileActionType == FileActionTypes.ContentLoadedFromDisk)
             {
-                //TableDataSource.Instance.CleanAllErrors();
+                
+                TableDataSource.Instance.CleanAllErrors();
                 //CheckerExtension.Instance.CheckA11y();
             }
         }
