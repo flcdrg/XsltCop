@@ -33,21 +33,19 @@ namespace Gardiner.XsltTools
                 string fileName = Path.GetFileName(document.FilePath);
                 Debug.WriteLine(fileName);
 
-                document.FileActionOccurred += DocumentSaved;
+                //TableDataSource.Instance.CleanAllErrors();
+
+                var checker = new XsltChecker();
+                var result = checker.CheckFile(document.FilePath);
+
+                ErrorListService.ProcessLintingResults(result);
+
+                //document.FileActionOccurred += DocumentSaved;
 
                 /*                if (fileName.Equals(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
                                     document.FileActionOccurred += DocumentSaved;*/
 
-                TableDataSource.Instance.AddErrors(new AccessibilityResult()
-                {
-                    Project = "My Project",
-                    Url = "http://localhost",
-                    Violations = new List<Rule>() { new Rule()
-                    {
-                        Column = 1, Description = "ah", FileName = fileName
-                    } }
-                    
-                });
+
             }
         }
 
@@ -56,7 +54,7 @@ namespace Gardiner.XsltTools
             if (e.FileActionType == FileActionTypes.ContentLoadedFromDisk)
             {
                 
-                TableDataSource.Instance.CleanAllErrors();
+
                 //CheckerExtension.Instance.CheckA11y();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell.TableManager;
 
@@ -7,7 +8,7 @@ namespace Gardiner.XsltTools.ErrorList
 {
     class TableEntriesSnapshot : TableEntriesSnapshotBase
     {
-        private string _projectName;
+        private readonly string _projectName;
 
         internal TableEntriesSnapshot(AccessibilityResult result)
         {
@@ -55,13 +56,11 @@ namespace Gardiner.XsltTools.ErrorList
                 }
                 else if (columnName == StandardTableKeyNames.Text)
                 {
-                    content = Errors[index].Help;
+                    content = Errors[index].Description;
                 }
                 else if (columnName == StandardTableKeyNames.FullText || columnName == StandardTableKeyNames.Text)
                 {
-                    content = Errors[index].Description + "\r\n\r\n" +
-                              "URL: " + Url + "\r\n" +
-                              "HTML: " + Errors[index].Html;
+                    content = Errors[index].Description;
                 }
 /*
                 else if (columnName == StandardTableKeyNames.PriorityImage || columnName == StandardTableKeyNames.ErrorSeverityImage)
@@ -93,9 +92,14 @@ namespace Gardiner.XsltTools.ErrorList
                 {
                     content = _projectName;
                 }
-                else if ((columnName == StandardTableKeyNames.ErrorCodeToolTip) || (columnName == StandardTableKeyNames.HelpLink))
+                else if ((columnName == StandardTableKeyNames.ErrorCodeToolTip) ||
+                         (columnName == StandardTableKeyNames.HelpLink))
                 {
                     content = Uri.EscapeUriString(Errors[index].HelpUrl);
+                }
+                else
+                {
+                    Debug.WriteLine(columnName);
                 }
             }
 

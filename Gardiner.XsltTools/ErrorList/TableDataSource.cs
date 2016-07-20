@@ -42,6 +42,7 @@ namespace Gardiner.XsltTools.ErrorList
             }
         }
 
+
         public bool HasErrors
         {
             get { return _snapshots.Any(); }
