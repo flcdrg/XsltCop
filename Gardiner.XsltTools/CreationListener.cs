@@ -39,23 +39,6 @@ namespace Gardiner.XsltTools
                 var result = checker.CheckFile(document.FilePath);
 
                 ErrorListService.ProcessLintingResults(result);
-
-                //document.FileActionOccurred += DocumentSaved;
-
-                /*                if (fileName.Equals(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
-                                    document.FileActionOccurred += DocumentSaved;*/
-
-
-            }
-        }
-
-        private void DocumentSaved(object sender, TextDocumentFileActionEventArgs e)
-        {
-            if (e.FileActionType == FileActionTypes.ContentLoadedFromDisk)
-            {
-                
-
-                //CheckerExtension.Instance.CheckA11y();
             }
         }
     }

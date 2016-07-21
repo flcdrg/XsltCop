@@ -1,17 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="Gardiner.XsltTools.David Gardiner.9f30a511-362f-4ebe-bc2d-4b987c1b9a96" Version="1.0" Language="en-US" Publisher="David Gardiner" />
-    <DisplayName>XsltTools</DisplayName>
-    <Description xml:space="preserve">Various tools to enhance editing and checking XSLT files</Description>
+    <DisplayName>XsltCop</DisplayName>
+    <Description xml:space="preserve">Static analysis tool to enhance editing and check for common mistakes in XSLT files</Description>
+    <MoreInfo>https://github.com/flcdrg/XsltExtension</MoreInfo>
+    <License>Resources\LICENCE</License>
+    <ReleaseNotes>https://github.com/flcdrg/XsltExtension/blob/master/CHANGELOG.md</ReleaseNotes>
+    <Icon>Resources\Icon.png</Icon>
+    <PreviewImage>Resources\Preview.png</PreviewImage>
+    <Tags>xslt, static analysis, fxcop</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
   </Dependencies>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
   </Assets>
 </PackageManifest>

@@ -8,11 +8,11 @@ namespace Gardiner.XsltTools
     static class Vsix
     {
         public const string Id = "Gardiner.XsltTools.David Gardiner.9f30a511-362f-4ebe-bc2d-4b987c1b9a96";
-        public const string Name = "XsltTools";
-        public const string Description = "Various tools to enhance editing and checking XSLT files";
+        public const string Name = "XsltCop";
+        public const string Description = "Static analysis tool to enhance editing and check for common mistakes in XSLT files";
         public const string Language = "en-US";
         public const string Version = "1.0";
         public const string Author = "David Gardiner";
-        public const string Tags = "";
+        public const string Tags = "xslt, static analysis, fxcop";
     }
 }

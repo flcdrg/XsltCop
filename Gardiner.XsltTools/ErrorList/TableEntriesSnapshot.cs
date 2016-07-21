@@ -99,7 +99,7 @@ namespace Gardiner.XsltTools.ErrorList
                 }
                 else
                 {
-                    Debug.WriteLine(columnName);
+                    //Debug.WriteLine(columnName);
                 }
             }
 
