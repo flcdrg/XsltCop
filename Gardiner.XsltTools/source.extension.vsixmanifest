@@ -7,7 +7,7 @@
 
 Runs on Build, and lists any rule violations in the Error List window</Description>
     <MoreInfo>https://github.com/flcdrg/XsltCop</MoreInfo>
-    <License>Resources\LICENCE</License>
+    <License>Resources\LICENSE</License>
     <ReleaseNotes>https://github.com/flcdrg/XsltCop/blob/master/CHANGELOG.md</ReleaseNotes>
     <Icon>Resources\Icon.png</Icon>
     <PreviewImage>Resources\Preview.png</PreviewImage>
