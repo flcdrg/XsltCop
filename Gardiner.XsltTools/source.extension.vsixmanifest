@@ -3,10 +3,12 @@
   <Metadata>
     <Identity Id="Gardiner.XsltTools.David Gardiner.9f30a511-362f-4ebe-bc2d-4b987c1b9a96" Version="1.0" Language="en-US" Publisher="David Gardiner" />
     <DisplayName>XsltCop</DisplayName>
-    <Description xml:space="preserve">Static analysis tool to enhance editing and check for common mistakes in XSLT files</Description>
-    <MoreInfo>https://github.com/flcdrg/XsltExtension</MoreInfo>
+    <Description xml:space="preserve">Static analysis tool to enhance editing and checking for common mistakes in XSLT files.
+
+Runs on Build, and lists any rule violations in the Error List window</Description>
+    <MoreInfo>https://github.com/flcdrg/XsltCop</MoreInfo>
     <License>Resources\LICENCE</License>
-    <ReleaseNotes>https://github.com/flcdrg/XsltExtension/blob/master/CHANGELOG.md</ReleaseNotes>
+    <ReleaseNotes>https://github.com/flcdrg/XsltCop/blob/master/CHANGELOG.md</ReleaseNotes>
     <Icon>Resources\Icon.png</Icon>
     <PreviewImage>Resources\Preview.png</PreviewImage>
     <Tags>xslt, static analysis, fxcop</Tags>
