@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
+
 using Gardiner.XsltTools.ErrorList;
+
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -15,7 +15,7 @@ namespace Gardiner.XsltTools
     [Export(typeof(IVsTextViewCreationListener))]
     [ContentType("xml")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
-    class CreationListener : IVsTextViewCreationListener
+    internal class CreationListener : IVsTextViewCreationListener
     {
         [Import]
         public IVsEditorAdaptersFactoryService EditorAdaptersFactoryService { get; set; }
@@ -30,7 +30,7 @@ namespace Gardiner.XsltTools
 
             if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out document))
             {
-                string fileName = Path.GetFileName(document.FilePath);
+                var fileName = Path.GetFileName(document.FilePath);
                 Debug.WriteLine(fileName);
 
                 //TableDataSource.Instance.CleanAllErrors();

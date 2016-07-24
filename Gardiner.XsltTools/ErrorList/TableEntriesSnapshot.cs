@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Gardiner.XsltTools.ErrorList
 {
-    class TableEntriesSnapshot : TableEntriesSnapshotBase
+    internal class TableEntriesSnapshot : TableEntriesSnapshotBase
     {
         private readonly string _projectName;
 
@@ -96,10 +97,6 @@ namespace Gardiner.XsltTools.ErrorList
                          (columnName == StandardTableKeyNames.HelpLink))
                 {
                     content = Uri.EscapeUriString(Errors[index].HelpUrl);
-                }
-                else
-                {
-                    //Debug.WriteLine(columnName);
                 }
             }
 

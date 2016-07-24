@@ -54,6 +54,7 @@
     <Compile Include="CreationListener.cs" />
     <Compile Include="ErrorList\AccessibilityResult.cs" />
     <Compile Include="ErrorList\ErrorListService.cs" />
+    <Compile Include="ErrorList\Rule.cs" />
     <Compile Include="ErrorList\SinkManager.cs" />
     <Compile Include="ErrorList\TableDataSource.cs" />
     <Compile Include="ErrorList\TableEntriesSnapshot.cs" />

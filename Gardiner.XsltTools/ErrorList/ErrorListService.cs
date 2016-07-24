@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Gardiner.XsltTools.ErrorList
 {
-    class ErrorListService
+    internal class ErrorListService
     {
         public static void ProcessLintingResults(AccessibilityResult result)
         {

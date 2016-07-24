@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Gardiner.XsltTools.ErrorList
 {
-    class SinkManager : IDisposable
+    internal class SinkManager : IDisposable
     {
         private readonly ITableDataSink _sink;
-        private TableDataSource _errorList;
-        private List<TableEntriesSnapshot> _snapshots = new List<TableEntriesSnapshot>();
+        private readonly TableDataSource _errorList;
+        private readonly List<TableEntriesSnapshot> _snapshots = new List<TableEntriesSnapshot>();
 
         internal SinkManager(TableDataSource errorList, ITableDataSink sink)
         {
@@ -17,6 +18,12 @@ namespace Gardiner.XsltTools.ErrorList
             _errorList = errorList;
 
             errorList.AddSinkManager(this);
+        }
+
+        public void Dispose()
+        {
+            // Called when the person who subscribed to the data source disposes of the cookie (== this object) they were given.
+            _errorList.RemoveSinkManager(this);
         }
 
         internal void Clear()
@@ -46,7 +53,7 @@ namespace Gardiner.XsltTools.ErrorList
 
         internal void RemoveSnapshots(IEnumerable<string> urls)
         {
-            foreach (string url in urls)
+            foreach (var url in urls)
             {
                 var existing = _snapshots.FirstOrDefault(s => s.Url == url);
 
@@ -56,12 +63,6 @@ namespace Gardiner.XsltTools.ErrorList
                     _sink.RemoveSnapshot(existing);
                 }
             }
-        }
-
-        public void Dispose()
-        {
-            // Called when the person who subscribed to the data source disposes of the cookie (== this object) they were given.
-            _errorList.RemoveSinkManager(this);
         }
     }
 }

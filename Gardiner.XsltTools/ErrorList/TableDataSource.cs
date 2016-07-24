@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.TableControl;
@@ -9,37 +10,35 @@ using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Gardiner.XsltTools.ErrorList
 {
-    class TableDataSource : ITableDataSource
+    internal class TableDataSource : ITableDataSource
     {
         private static TableDataSource _instance;
-        private readonly List<SinkManager> _managers = new List<SinkManager>();
-        private static Dictionary<string, TableEntriesSnapshot> _snapshots = new Dictionary<string, TableEntriesSnapshot>();
 
-        [Import]
-        private ITableManagerProvider TableManagerProvider { get; set; } = null;
+        private static readonly Dictionary<string, TableEntriesSnapshot> _snapshots =
+            new Dictionary<string, TableEntriesSnapshot>();
+
+        private readonly List<SinkManager> _managers = new List<SinkManager>();
 
         private TableDataSource()
         {
-            var compositionService = ServiceProvider.GlobalProvider.GetService(typeof(SComponentModel)) as IComponentModel;
+            var compositionService = (IComponentModel) ServiceProvider.GlobalProvider.GetService(typeof(SComponentModel));
             compositionService.DefaultCompositionService.SatisfyImportsOnce(this);
 
             var manager = TableManagerProvider.GetTableManager(StandardTables.ErrorsTable);
             manager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander,
-                                                   StandardTableColumnDefinitions.ErrorSeverity, StandardTableColumnDefinitions.ErrorCode,
-                                                   StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.BuildTool,
-                                                   StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.ErrorCategory,
-                                                   StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName, StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
+                StandardTableColumnDefinitions.ErrorSeverity, StandardTableColumnDefinitions.ErrorCode,
+                StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.BuildTool,
+                StandardTableColumnDefinitions.ErrorSource, StandardTableColumnDefinitions.ErrorCategory,
+                StandardTableColumnDefinitions.Text, StandardTableColumnDefinitions.DocumentName,
+                StandardTableColumnDefinitions.Line, StandardTableColumnDefinitions.Column);
         }
+
+        [Import]
+        private ITableManagerProvider TableManagerProvider { get; set; }
 
         public static TableDataSource Instance
         {
-            get
-            {
-                if (_instance == null)
-                    _instance = new TableDataSource();
-
-                return _instance;
-            }
+            get { return _instance ?? (_instance = new TableDataSource()); }
         }
 
 
@@ -47,28 +46,6 @@ namespace Gardiner.XsltTools.ErrorList
         {
             get { return _snapshots.Any(); }
         }
-
-        #region ITableDataSource members
-        public string SourceTypeIdentifier
-        {
-            get { return StandardTableDataSources.ErrorTableDataSource; }
-        }
-
-        public string Identifier
-        {
-            get { return "8339E980-B78E-48EF-A9A5-C8BA7947A37B"; }
-        }
-
-        public string DisplayName
-        {
-            get { return Vsix.Name; }
-        }
-
-        public IDisposable Subscribe(ITableDataSink sink)
-        {
-            return new SinkManager(this, sink);
-        }
-        #endregion
 
         public void AddSinkManager(SinkManager manager)
         {
@@ -116,7 +93,7 @@ namespace Gardiner.XsltTools.ErrorList
 
         public void CleanErrors(params string[] urls)
         {
-            foreach (string url in urls)
+            foreach (var url in urls)
             {
                 if (_snapshots.ContainsKey(url))
                 {
@@ -138,13 +115,10 @@ namespace Gardiner.XsltTools.ErrorList
 
         public void CleanAllErrors()
         {
-            foreach (string url in _snapshots.Keys)
+            foreach (var url in _snapshots.Keys)
             {
                 var snapshot = _snapshots[url];
-                if (snapshot != null)
-                {
-                    snapshot.Dispose();
-                }
+                snapshot?.Dispose();
             }
 
             _snapshots.Clear();
@@ -159,5 +133,29 @@ namespace Gardiner.XsltTools.ErrorList
 
             UpdateAllSinks();
         }
+
+        #region ITableDataSource members
+
+        public string SourceTypeIdentifier
+        {
+            get { return StandardTableDataSources.ErrorTableDataSource; }
+        }
+
+        public string Identifier
+        {
+            get { return "8339E980-B78E-48EF-A9A5-C8BA7947A37B"; }
+        }
+
+        public string DisplayName
+        {
+            get { return Vsix.Name; }
+        }
+
+        public IDisposable Subscribe(ITableDataSink sink)
+        {
+            return new SinkManager(this, sink);
+        }
+
+        #endregion
     }
 }
