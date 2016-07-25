@@ -18,7 +18,7 @@ A Visual Studio 2015 extension to support enhancements for working with XSLT fil
 
 * @MadsKristensen and his many VS Extension projects, particularly [WebAccessibilityChecker](https://github.com/madskristensen/WebAccessibilityChecker)
 * @qmfrederik and [XPathParser](https://github.com/quamotion/XPathParser) (originally by Sergey Dubinets at http://xpathparser.codeplex.com/)
-* 
+
 ## Further reading
 
 ### Other XSLT Lint tools and ideas
