@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
@@ -25,20 +26,27 @@ namespace Gardiner.XsltTools
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            var textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
-            ITextDocument document;
-
-            if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out document))
+            try
             {
-                var fileName = Path.GetFileName(document.FilePath);
-                Debug.WriteLine(fileName);
+                var textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
+                ITextDocument document;
 
-                //TableDataSource.Instance.CleanAllErrors();
+                if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out document))
+                {
+                    var fileName = Path.GetFileName(document.FilePath);
+                    Debug.WriteLine(fileName);
 
-                var checker = new XsltChecker();
-                var result = checker.CheckFile(document.FilePath);
+                    //TableDataSource.Instance.CleanAllErrors();
 
-                ErrorListService.ProcessLintingResults(result);
+                    var checker = new XsltChecker();
+                    var result = checker.CheckFile(document.FilePath);
+
+                    ErrorListService.ProcessLintingResults(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Telemetry.Log(ex);
             }
         }
     }

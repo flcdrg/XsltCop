@@ -4,7 +4,7 @@ using System.Xml.XPath;
 
 using CodePlex.XPathParser;
 
-namespace ConsoleApplication3
+namespace Gardiner.XsltTools
 {
     internal class XPathTreeBuilder : IXPathBuilder<XElement>
     {

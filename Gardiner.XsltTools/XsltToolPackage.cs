@@ -2,6 +2,12 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Interop;
+
+using EnvDTE;
+
+using EnvDTE80;
 
 using Gardiner.XsltTools.ErrorList;
 
@@ -31,6 +37,7 @@ namespace Gardiner.XsltTools
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)]
+    [ProvideOptionPage(typeof(Options), "XsltCop", "General", 101, 111, true, new[] { "xslt", "xpath" }, ProvidesLocalizedCategoryName = false)]
     // Info on this package for Help/About
     [Guid(PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly",
@@ -49,6 +56,9 @@ namespace Gardiner.XsltTools
         private IVsSolution _spSolution;
 
         private IVsSolutionBuildManager2 _spSolutionBm;
+        private DTE2 _dte;
+
+        public static Options Options { get; private set; }
 
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
@@ -129,14 +139,21 @@ namespace Gardiner.XsltTools
         public int UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction,
             ref int pfCancel)
         {
-            object o;
-            pHierProj.GetProperty((uint) VSConstants.VSITEMID.Root, (int) __VSHPROPID.VSHPROPID_Name, out o);
-            var name = o as string;
+            try
+            {
+                object o;
+                pHierProj.GetProperty((uint) VSConstants.VSITEMID.Root, (int) __VSHPROPID.VSHPROPID_Name, out o);
+                var name = o as string;
 
-            Debug.WriteLine($"UpdateProjectCfg_Begin {name}");
+                Debug.WriteLine($"UpdateProjectCfg_Begin {name}");
 
-            // get files from project
-            ProcessHierarchy(pHierProj, name);
+                // get files from project
+                ProcessHierarchy(pHierProj, name);
+            }
+            catch (Exception ex)
+            {
+                Telemetry.Log(ex);
+            }
             return VSConstants.S_OK;
         }
 
@@ -178,15 +195,53 @@ namespace Gardiner.XsltTools
         /// </summary>
         protected override void Initialize()
         {
+            _dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
+            Options = (Options)GetDialogPage(typeof(Options));
+
+            Telemetry.Initialise(new HockeyClientTelemetryProvider(Options), _dte);
+                
+            Logger.Initialize(this, Vsix.Name);
             base.Initialize();
 
             _spSolution = (IVsSolution) ServiceProvider.GlobalProvider.GetService(typeof(SVsSolution));
             _spSolution.AdviseSolutionEvents(this, out _pdwCookieSolution);
 
             // To listen events that fired as a IVsUpdateSolutionEvents2
-            _spSolutionBm =
-                (IVsSolutionBuildManager2) ServiceProvider.GlobalProvider.GetService(typeof(SVsSolutionBuildManager));
+            _spSolutionBm = (IVsSolutionBuildManager2) ServiceProvider.GlobalProvider.GetService(typeof(SVsSolutionBuildManager));
             _spSolutionBm.AdviseUpdateSolutionEvents(this, out _pdwCookieSolutionBm);
+
+            PromptUser();
+        }
+
+        private void PromptUser()
+        {
+            const string permissionKey = "Gardiner.XsltTool.AskPermissionForFeedback";
+
+            try
+            {
+                var userHasBeenPrompted = bool.Parse(UserRegistryRoot.GetValue(permissionKey, false).ToString());
+
+                if (!userHasBeenPrompted)
+                {
+
+                    var hwnd = new IntPtr(_dte.MainWindow.HWnd);
+                    var window = (System.Windows.Window)HwndSource.FromHwnd(hwnd).RootVisual;
+
+                    const string msg = "Provide automatic feedback of crash and de-identified usage data to help improve this extension?\r\r(This is an open source project hosted at https://github.com/flcdrg/XsltCop)";
+                    var answer = MessageBox.Show(window, msg, Vsix.Name, MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    if (answer == MessageBoxResult.Yes)
+                        Options.FeedbackAllowed = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+            }
+            finally
+            {
+                UserRegistryRoot.SetValue(permissionKey, true);
+            }
         }
 
         private void ProcessHierarchy(IVsHierarchy hierarchy, string projectName)

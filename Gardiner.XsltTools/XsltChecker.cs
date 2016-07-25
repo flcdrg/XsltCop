@@ -8,8 +8,6 @@ using System.Xml.Linq;
 
 using CodePlex.XPathParser;
 
-using ConsoleApplication3;
-
 using Gardiner.XsltTools.ErrorList;
 
 namespace Gardiner.XsltTools
