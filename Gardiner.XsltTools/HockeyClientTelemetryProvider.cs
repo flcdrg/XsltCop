@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Microsoft.HockeyApp;
-using Microsoft.HockeyApp.DataContracts;
 using Microsoft.HockeyApp.Model;
 
 namespace Gardiner.XsltTools
@@ -14,16 +14,23 @@ namespace Gardiner.XsltTools
         private HockeyClient _hockeyClient;
         private readonly Options _options;
 
-        public HockeyClientTelemetryProvider(Options options)
+        private HockeyClientTelemetryProvider(Options options)
         {
             _options = options;
 
             _options.PropertyChanged += OptionsOnPropertyChanged;
-
-            Configure();
         }
 
-        private void Configure()
+        public static async Task<HockeyClientTelemetryProvider> Create(Options options)
+        {
+            var provider = new HockeyClientTelemetryProvider(options);
+
+            await provider.Configure();
+
+            return provider;
+        }
+
+        private async Task Configure()
         {
             if (_options.FeedbackAllowed)
             {
@@ -48,22 +55,32 @@ namespace Gardiner.XsltTools
                     Version = Assembly.GetExecutingAssembly().GetName().Version.ToString()
                 };
 
-                var field = typeof(HockeyClient).GetField("_crashLogInfo", BindingFlags.NonPublic | BindingFlags.Instance);
+                var field = typeof(HockeyClient).GetField("_crashLogInfo",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
 
-                field.SetValue(_hockeyClient, crashLogInfo);
+                field?.SetValue(_hockeyClient, crashLogInfo);
 
 #if DEBUG
                 _hockeyClient.OnHockeySDKInternalException += (sender, args) =>
                 {
-                    if (Debugger.IsAttached) { Debugger.Break(); }
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
+                    }
                 };
 #endif
+
+                /*
+                // TrackEvent is not yet supported for WPF
 
                 var telemetry = new EventTelemetry("Usage");
                 telemetry.Properties.Add("OperatingSystem", crashLogInfo.OperatingSystem);
                 telemetry.Properties.Add("Visual Studio", crashLogInfo.Model);
                 telemetry.Properties.Add("Version", crashLogInfo.Version);
                 _hockeyClient.TrackEvent(telemetry);
+                */
+
+                await _hockeyClient.SendCrashesAsync(true);
 
                 _hockeyClient.Flush();
             }
@@ -73,11 +90,11 @@ namespace Gardiner.XsltTools
             }
         }
 
-        private void OptionsOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private async void OptionsOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName == nameof(Options.FeedbackAllowed))
             {
-                Configure();
+                await Configure();
             }
         }
 

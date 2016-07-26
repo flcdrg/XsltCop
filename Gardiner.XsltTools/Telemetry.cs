@@ -31,6 +31,8 @@ namespace Gardiner.XsltTools
 
         public static void Shutdown()
         {
+            _events.OnBeginShutdown -= Shutdown;
+
             _provider.Shutdown();
         }
     }
