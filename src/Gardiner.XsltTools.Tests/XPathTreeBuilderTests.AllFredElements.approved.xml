@@ -1,0 +1,7 @@
+﻿<step>
+  <Root nodeType="All" prefix="(null)" name="(null)" />
+  <step>
+    <DescendantOrSelf nodeType="All" prefix="(null)" name="(null)" />
+    <Child nodeType="Element" prefix="" name="fred" />
+  </step>
+</step>

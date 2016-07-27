@@ -7,7 +7,7 @@ using CodePlex.XPathParser;
 
 namespace Gardiner.XsltTools
 {
-    internal class XPathTreeBuilder : IXPathBuilder<XElement>
+    public class XPathTreeBuilder : IXPathBuilder<XElement>
     {
         public void StartBuild()
         {
