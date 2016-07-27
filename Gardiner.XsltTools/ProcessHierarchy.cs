@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 using Gardiner.XsltTools.ErrorList;
@@ -54,7 +55,7 @@ namespace Gardiner.XsltTools
                         // No more nodes
                         break;
                     }
-                    var visibleChildNode = Convert.ToUInt32(value);
+                    var visibleChildNode = Convert.ToUInt32(value, CultureInfo.InvariantCulture);
 
                     // Enter in recursion
                     ProcessHierarchyNodeRecursively(hierarchy, visibleChildNode, projectName);
@@ -77,7 +78,8 @@ namespace Gardiner.XsltTools
                 result = hierarchy.GetCanonicalName(itemId, out canonicalName);
 
                 if (result == VSConstants.S_OK && canonicalName != null &&
-                    (canonicalName.EndsWith(".xsl") || canonicalName.EndsWith(".xslt")))
+                    (canonicalName.EndsWith(".xsl", StringComparison.InvariantCultureIgnoreCase) 
+                    || canonicalName.EndsWith(".xslt", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     Debug.WriteLine($"\tCanonical name: {canonicalName} {guid}");
 

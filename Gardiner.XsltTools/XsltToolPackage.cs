@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -87,7 +88,7 @@ namespace Gardiner.XsltTools
                 processor.Process(pHierProj, name);
 
                 // For testing telemetry
-                throw new InvalidOperationException("Oh dear");
+                //throw new InvalidOperationException("Oh dear");
             }
             catch (Exception ex)
             {
@@ -101,7 +102,7 @@ namespace Gardiner.XsltTools
             _dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
             Options = (Options)GetDialogPage(typeof(Options));
 
-            var provider = await HockeyClientTelemetryProvider.Create(Options);
+            var provider = await HockeyClientTelemetryProvider.Create(Options).ConfigureAwait(true);
             Telemetry.Initialise(provider, _dte);
 
             Logger.Initialize(this, Vsix.Name);
@@ -115,7 +116,7 @@ namespace Gardiner.XsltTools
 
             PromptUser();
 
-            await base.InitializeAsync(cancellationToken, progress);
+            await base.InitializeAsync(cancellationToken, progress).ConfigureAwait(true);
         }
 
         private void PromptUser()
@@ -138,7 +139,7 @@ namespace Gardiner.XsltTools
 
                 if (window != null)
                 {
-                    var answer = MessageBox.Show(window, Resources.PermissionPrompt, string.Format(Resources.PermissionPromptCaption, Vsix.Name), MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    var answer = MessageBox.Show(window, Resources.PermissionPrompt, string.Format(CultureInfo.CurrentCulture, Resources.PermissionPromptCaption, Vsix.Name), MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                     if (answer == MessageBoxResult.Yes)
                         Options.FeedbackAllowed = true;

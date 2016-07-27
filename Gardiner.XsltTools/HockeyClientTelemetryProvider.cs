@@ -9,7 +9,7 @@ using Microsoft.HockeyApp.Model;
 
 namespace Gardiner.XsltTools
 {
-    public class HockeyClientTelemetryProvider : ITelemetryProvider
+    public sealed class HockeyClientTelemetryProvider : ITelemetryProvider
     {
         private HockeyClient _hockeyClient;
         private readonly Options _options;
@@ -25,7 +25,7 @@ namespace Gardiner.XsltTools
         {
             var provider = new HockeyClientTelemetryProvider(options);
 
-            await provider.Configure();
+            await provider.Configure().ConfigureAwait(false);
 
             return provider;
         }
@@ -80,7 +80,7 @@ namespace Gardiner.XsltTools
                 _hockeyClient.TrackEvent(telemetry);
                 */
 
-                await _hockeyClient.SendCrashesAsync(true);
+                await _hockeyClient.SendCrashesAsync(true).ConfigureAwait(false);
 
                 _hockeyClient.Flush();
             }
@@ -94,7 +94,7 @@ namespace Gardiner.XsltTools
         {
             if (propertyChangedEventArgs.PropertyName == nameof(Options.FeedbackAllowed))
             {
-                await Configure();
+                await Configure().ConfigureAwait(false);
             }
         }
 

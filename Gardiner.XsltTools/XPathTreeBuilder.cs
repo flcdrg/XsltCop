@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -17,7 +18,9 @@ namespace Gardiner.XsltTools
             return result;
         }
 
+#pragma warning disable CA1720 // Identifier contains type name
         public XElement String(string value)
+#pragma warning restore CA1720 // Identifier contains type name
         {
             return new XElement("string", new XAttribute("value", value));
         }
@@ -33,16 +36,21 @@ namespace Gardiner.XsltTools
             {
                 return new XElement("negate", left);
             }
+
+#pragma warning disable CA1305 // This rule is invalid for Enum
             return new XElement(op.ToString(), left, right);
+#pragma warning restore CA1305 // This rule is invalid for Enum
         }
 
         public XElement Axis(XPathAxis xpathAxis, XPathNodeType nodeType, string prefix, string name)
         {
+#pragma warning disable CA1305 // This rule is invalid for Enum
             return new XElement(xpathAxis.ToString(),
                 new XAttribute("nodeType", nodeType.ToString()),
                 new XAttribute("prefix", prefix ?? "(null)"),
                 new XAttribute("name", name ?? "(null)")
                 );
+#pragma warning restore CA1305 // This rule is invalid for Enum
         }
 
         public XElement JoinStep(XElement left, XElement right)

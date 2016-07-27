@@ -16,7 +16,7 @@ namespace Gardiner.XsltTools.ErrorList
         public string Html { get; set; }
         public string Id { get; set; }
         public string Impact { get; set; }
-        public List<string> Tags { get; set; }
+        public List<string> Tags { get; private set; }
 
         public string FileName
         {

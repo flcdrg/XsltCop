@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Gardiner.XsltTools.ErrorList
 {
-    internal class SinkManager : IDisposable
+    internal sealed class SinkManager : IDisposable
     {
         private readonly ITableDataSink _sink;
         private readonly TableDataSource _errorList;
