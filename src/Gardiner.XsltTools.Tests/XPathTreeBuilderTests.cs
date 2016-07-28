@@ -11,15 +11,21 @@ using NUnit.Framework;
 namespace Gardiner.XsltTools.Tests
 {
     [TestFixture]
+    [UseReporter(typeof(BeyondCompareReporter))]
     public class XPathTreeBuilderTests
     {
         [Test]
-        [UseReporter(typeof(BeyondCompareReporter))]
         public void AllFredElements()
         {
             var result = new XPathParser<XElement>().Parse("//fred", new XPathTreeBuilder());
 
             Approvals.VerifyXml(result.ToString());
+        }
+
+        [Test]
+        public void MismatchedSquareBrackets()
+        {
+            Assert.Throws<XPathParserException>( () => new XPathParser<XElement>().Parse("[@attr='blah']", new XPathTreeBuilder()));
         }
     }
 }
