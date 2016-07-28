@@ -13,7 +13,7 @@ namespace Gardiner.XsltTools
 
 Runs on Build, and lists any rule violations in the Error List window";
         public const string Language = "en-US";
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public const string Author = "David Gardiner";
         public const string Tags = "xslt, static analysis, fxcop";
     }

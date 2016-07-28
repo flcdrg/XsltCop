@@ -18,7 +18,7 @@ namespace Gardiner.XsltTools
         {
             var violations = new List<Rule>();
 
-            Console.WriteLine(filename);
+            Debug.WriteLine(filename);
             var text = File.ReadAllText(filename);
             var doc = XDocument.Parse(text, LoadOptions.SetLineInfo | LoadOptions.PreserveWhitespace);
 
@@ -35,51 +35,64 @@ namespace Gardiner.XsltTools
                     .Union(variables)
                     .ToList();
 
-
             // places to look
             var things =
                 doc.Root.Descendants().Attributes("select").Union(doc.Root.Descendants().Attributes("test")).ToList();
 
-            foreach (var parameter in parameters)
+            foreach (var attribute in things)
             {
-                foreach (var attribute in things)
+                var lineInfo = (IXmlLineInfo)attribute;
+
+                try
                 {
                     var xpath = new XPathParser<XElement>().Parse(attribute.Value, new XPathTreeBuilder());
 
-                    var notVariables =
-                        xpath.Descendants()
-                            .Attributes("name")
-                            .Where(a => a.Parent.Name != "variable")
-                            .Select(x => x.Value)
-                            .ToList();
-
-                    if (notVariables.Contains(parameter))
+                    foreach (var parameter in parameters)
                     {
-                        var lineInfo = (IXmlLineInfo) attribute;
-                        Debug.WriteLine($"\tWarning: {parameter} at ({lineInfo.LineNumber},{lineInfo.LinePosition})");
+                        var notVariables =
+                            xpath.Descendants()
+                                .Attributes("name")
+                                .Where(a => a.Parent.Name != "variable")
+                                .Select(x => x.Value)
+                                .ToList();
 
-                        violations.Add(new Rule
+                        if (notVariables.Contains(parameter))
                         {
-                            FileName = filename,
-                            Column = lineInfo.LinePosition,
-                            Line = lineInfo.LineNumber - 1,
-                            Impact = "moderate",
-                            Description = $"{parameter} used without a $ prefix",
-                            Id = "XSLT001",
-                            Help = string.Empty,
-                            HelpUrl = string.Empty,
-                            Html = string.Empty
-                        });
+                            Debug.WriteLine($"\tWarning: {parameter} at ({lineInfo.LineNumber},{lineInfo.LinePosition})");
+
+                            AddRule(filename, violations, lineInfo, $"{parameter} used without a $ prefix", "XSLT001");
+                        }
                     }
+                }
+                catch (XPathParserException ex)
+                {
+                    AddRule(filename, violations, lineInfo, $"Error parsing XPath expression: {ex.Message}",
+                        "XSLT002");
                 }
             }
 
             return new AccessibilityResult
             {
                 Project = "My Project",
-                Url = new UriBuilder(filename).Uri.AbsolutePath,
+                Url = new UriBuilder(filename).Uri.AbsolutePath.ToUpperInvariant(),
                 Violations = violations
             };
+        }
+
+        private static void AddRule(string filename, ICollection<Rule> violations, IXmlLineInfo lineInfo, string description, string id)
+        {
+            violations.Add(new Rule
+            {
+                FileName = filename,
+                Column = lineInfo.LinePosition,
+                Line = lineInfo.LineNumber - 1,
+                Impact = "moderate",
+                Description = description,
+                Id = id,
+                Help = string.Empty,
+                HelpUrl = string.Empty,
+                Html = string.Empty
+            });
         }
     }
 }

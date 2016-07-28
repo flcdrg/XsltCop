@@ -44,6 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Bad.xslt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Second.xslt" />
     <Content Include="First.xslt">
       <SubType>Designer</SubType>

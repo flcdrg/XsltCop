@@ -3,9 +3,12 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 
+using EnvDTE;
+
 using Gardiner.XsltTools.ErrorList;
 
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -24,6 +27,9 @@ namespace Gardiner.XsltTools
         [Import]
         public ITextDocumentFactoryService TextDocumentFactoryService { get; set; }
 
+        [Import]
+        internal SVsServiceProvider ServiceProvider = null;
+
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
             try
@@ -40,6 +46,12 @@ namespace Gardiner.XsltTools
 
                     var checker = new XsltChecker();
                     var result = checker.CheckFile(document.FilePath);
+
+                    var dte = (DTE)ServiceProvider.GetService(typeof(DTE));
+
+                    var projectItem = dte.Solution.FindProjectItem(fileName);
+
+                    result.Project = projectItem.ContainingProject.Name;
 
                     ErrorListService.ProcessLintingResults(result);
                 }
