@@ -75,7 +75,7 @@ namespace Gardiner.XsltTools
 
         public XElement Function(string prefix, string name, IList<XElement> args)
         {
-            var xe = new XElement("variable",
+            var xe = new XElement("function",
                 new XAttribute("prefix", prefix ?? "(null)"),
                 new XAttribute("name", name ?? "(null)")
                 );
