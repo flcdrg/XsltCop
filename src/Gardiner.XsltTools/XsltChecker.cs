@@ -20,56 +20,64 @@ namespace Gardiner.XsltTools
 
             Debug.WriteLine(filename);
             var text = File.ReadAllText(filename);
-            var doc = XDocument.Parse(text, LoadOptions.SetLineInfo | LoadOptions.PreserveWhitespace);
-
-            const string xsl = "http://www.w3.org/1999/XSL/Transform";
-
-            var variables =
-                doc.Root.Descendants(XName.Get("variable", xsl)).Attributes("name").Select(a => a.Value).ToList();
-
-            // find parameters 
-            var parameters =
-                doc.Root.Descendants(XName.Get("param", xsl))
-                    .Attributes("name")
-                    .Select(a => a.Value)
-                    .Union(variables)
-                    .ToList();
-
-            // places to look
-            var things =
-                doc.Root.Descendants().Attributes("select").Union(doc.Root.Descendants().Attributes("test")).ToList();
-
-            foreach (var attribute in things)
+            try
             {
-                var lineInfo = (IXmlLineInfo)attribute;
+                var doc = XDocument.Parse(text, LoadOptions.SetLineInfo | LoadOptions.PreserveWhitespace);
 
-                try
+                const string xsl = "http://www.w3.org/1999/XSL/Transform";
+
+                var variables =
+                    doc.Root.Descendants(XName.Get("variable", xsl)).Attributes("name").Select(a => a.Value).ToList();
+
+                // find parameters 
+                var parameters =
+                    doc.Root.Descendants(XName.Get("param", xsl))
+                        .Attributes("name")
+                        .Select(a => a.Value)
+                        .Union(variables)
+                        .ToList();
+
+                // places to look
+                var things =
+                    doc.Root.Descendants().Attributes("select").Union(doc.Root.Descendants().Attributes("test")).ToList();
+
+                foreach (var attribute in things)
                 {
-                    var xpath = new XPathParser<XElement>().Parse(attribute.Value, new XPathTreeBuilder());
+                    var lineInfo = (IXmlLineInfo)attribute;
 
-                    foreach (var parameter in parameters)
+                    try
                     {
-                        var notVariables =
-                            xpath.Descendants()
-                                .Attributes("name")
-                                .Where(a => a.Parent.Name != "variable")
-                                .Select(x => x.Value)
-                                .ToList();
+                        var xpath = new XPathParser<XElement>().Parse(attribute.Value, new XPathTreeBuilder());
 
-                        if (notVariables.Contains(parameter))
+                        foreach (var parameter in parameters)
                         {
-                            Debug.WriteLine($"\tWarning: {parameter} at ({lineInfo.LineNumber},{lineInfo.LinePosition})");
+                            var notVariables =
+                                xpath.Descendants()
+                                    .Attributes("name")
+                                    .Where(a => a.Parent.Name != "variable")
+                                    .Select(x => x.Value)
+                                    .ToList();
 
-                            AddRule(filename, violations, lineInfo, $"{parameter} used without a $ prefix", "XSLT001");
+                            if (notVariables.Contains(parameter))
+                            {
+                                Debug.WriteLine($"\tWarning: {parameter} at ({lineInfo.LineNumber},{lineInfo.LinePosition})");
+
+                                AddRule(filename, violations, lineInfo, $"{parameter} used without a $ prefix", "XSLT001");
+                            }
                         }
                     }
-                }
-                catch (XPathParserException ex)
-                {
-                    AddRule(filename, violations, lineInfo, $"Error parsing XPath expression: {ex.Message}",
-                        "XSLT002");
+                    catch (XPathParserException ex)
+                    {
+                        AddRule(filename, violations, lineInfo, $"Error parsing XPath expression: {ex.Message}",
+                            "XSLT002");
+                    }
                 }
             }
+            catch (XmlException)
+            {
+                // Must have been a weird XML document. Just ignore
+            }
+
 
             return new AccessibilityResult
             {
