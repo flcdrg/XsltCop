@@ -39,8 +39,9 @@ namespace Gardiner.XsltTools
                 if (string.IsNullOrEmpty(_hockeyClient.AppIdentifier))
                 {
                     // We must only call Configure once
-                    _hockeyClient.Configure("bb59fd06bb2a42aab4dff8125de22209")
-                        .RegisterDefaultUnobservedTaskExceptionHandler();
+                    _hockeyClient.Configure("bb59fd06bb2a42aab4dff8125de22209");
+                        // Suspect this is tracking ANY exception in Visual Studio - not just from our code
+                        //.RegisterDefaultUnobservedTaskExceptionHandler();
                 }
                 var helper = new HockeyPlatformHelperWPF();
 

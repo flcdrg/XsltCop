@@ -76,6 +76,7 @@ namespace Gardiner.XsltTools
             catch (XmlException)
             {
                 // Must have been a weird XML document. Just ignore
+                Debug.WriteLine("Invalid XML document. Ignoring");
             }
 
 

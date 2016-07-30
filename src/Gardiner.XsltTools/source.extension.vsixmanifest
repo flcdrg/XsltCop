@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="Gardiner.XsltTools.David Gardiner.9f30a511-362f-4ebe-bc2d-4b987c1b9a96" Version="1.1" Language="en-US" Publisher="David Gardiner" />
+    <Identity Id="Gardiner.XsltTools.David Gardiner.9f30a511-362f-4ebe-bc2d-4b987c1b9a96" Version="1.1.1" Language="en-US" Publisher="David Gardiner" />
     <DisplayName>XsltCop</DisplayName>
     <Description xml:space="preserve">Static analysis tool to enhance editing and checking for common mistakes in XSLT files.
 
