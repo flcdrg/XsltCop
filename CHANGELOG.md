@@ -1,3 +1,12 @@
+# v1.1.1
+
+* Bug fixes
+
+# v1.1
+
+* Include HockeyApp crash reporting #4 .
+* Warning on XPath parse errors
+
 # v1.0
 
 * Initial release
