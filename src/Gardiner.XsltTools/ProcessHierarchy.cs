@@ -55,7 +55,7 @@ namespace Gardiner.XsltTools
                         // No more nodes
                         break;
                     }
-                    var visibleChildNode = Convert.ToUInt32(value, CultureInfo.InvariantCulture);
+                    var visibleChildNode = GetItemId(value);
 
                     // Enter in recursion
                     ProcessHierarchyNodeRecursively(hierarchy, visibleChildNode, projectName);
@@ -65,6 +65,31 @@ namespace Gardiner.XsltTools
                         out value);
                 }
             }
+        }
+
+        // from http://dotneteers.net/blogs/divedeeper/archive/2008/10/16/LearnVSXNowPart36.aspx
+        private static uint GetItemId(object pvar)
+
+        {
+            if (pvar == null)
+                return VSConstants.VSITEMID_NIL;
+
+            if (pvar is int)
+                return (uint) (int) pvar;
+
+            if (pvar is uint)
+                return (uint) pvar;
+
+            if (pvar is short)
+                return (uint) (short) pvar;
+
+            if (pvar is ushort)
+                return (ushort) pvar;
+
+            if (pvar is long)
+                return (uint) (long) pvar;
+
+            return VSConstants.VSITEMID_NIL;
         }
 
         private void ShowNodeName(IVsHierarchy hierarchy, uint itemId, string projectName)
