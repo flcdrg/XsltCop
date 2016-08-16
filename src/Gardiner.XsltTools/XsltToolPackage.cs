@@ -125,7 +125,7 @@ namespace Gardiner.XsltTools
 
 #if DEBUG
             // Reset value for testing
-            UserRegistryRoot.SetValue(permissionKey, false);
+            // UserRegistryRoot.SetValue(permissionKey, false);
 #endif
             try
             {
