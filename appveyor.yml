@@ -7,7 +7,7 @@ version: 1.0.{build}
 before_build: 
   - nuget restore
   - ps: gitversion /l console /output buildserver
-  - ps: $env:APPVEYOR_BUILD_FOLDER\Update-VsixVersion.ps -Version $env:GitVersion_AssemblySemVer
+  - ps: & Update-VsixVersion.ps -Version $env:GitVersion_AssemblySemVer
 
 build_script:
   - msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
