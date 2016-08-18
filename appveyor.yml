@@ -1,11 +1,16 @@
 install:
   - choco install gitversion.portable -pre -y
+  - ps: (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
 
 version: 1.0.{build}
 
 before_build: 
   - nuget restore
-  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+  - ps: gitversion /l console /output buildserver
+  - ps: Vsix-IncrementVsixVersion
 
 build_script:
   - msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+
+after_test:
+- ps: Vsix-PushArtifacts | Vsix-PublishToGallery
