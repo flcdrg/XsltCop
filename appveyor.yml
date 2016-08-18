@@ -1,7 +1,11 @@
+install:
+  - choco install gitversion.portable -pre -y
+
 version: 1.0.{build}
 
 before_build: 
   - nuget restore
+  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 build_script:
   - msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
