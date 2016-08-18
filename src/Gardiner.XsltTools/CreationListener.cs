@@ -8,6 +8,8 @@ using System.Xml.Linq;
 
 using EnvDTE;
 
+using Gardiner.XsltTools.Classification;
+using Gardiner.XsltTools.Commands;
 using Gardiner.XsltTools.ErrorList;
 
 using Microsoft.VisualStudio;
@@ -15,12 +17,11 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using Microsoft.VisualStudio.XmlEditor;
-
-using XsltEditor.Commands;
 
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
@@ -28,8 +29,9 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 namespace Gardiner.XsltTools
 {
     [Export(typeof(IVsTextViewCreationListener))]
-    [ContentType("XML")]
+    [ContentType("XSLT")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
+    [Order(After = Priority.High)]
     internal class CreationListener : IVsTextViewCreationListener
     {
         [Import]
@@ -40,6 +42,10 @@ namespace Gardiner.XsltTools
 
         [Import]
         internal SVsServiceProvider ServiceProvider = null;
+
+        [Import]
+        public IClassificationTypeRegistryService Registry { get; set; }
+
 
         //private XmlStore _store;
         private XmlModel _model = null;
@@ -52,7 +58,8 @@ namespace Gardiner.XsltTools
             {
                 var textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
 
-                textView.Properties.GetOrCreateSingletonProperty(() => new ImportHrefGoToDefinition(textViewAdapter, textView));
+                textView.Properties.GetOrCreateSingletonProperty(
+                    () => new ImportHrefGoToDefinition(textViewAdapter, textView));
 
                 ITextDocument document;
 
@@ -63,12 +70,21 @@ namespace Gardiner.XsltTools
                     var fileName = Path.GetFileName(document.FilePath);
                     Debug.WriteLine(fileName);
 
+                    XsltClassifier classifier;
+                    textView.TextDataModel.DocumentBuffer.Properties.TryGetProperty(typeof(XsltClassifier), out classifier);
+
+                    if (classifier != null)
+                    {
+                        var snapshot = textView.TextBuffer.CurrentSnapshot;
+                        classifier.OnClassificationChanged(new ClassificationChangedEventArgs(new SnapshotSpan(snapshot, 0, snapshot.Length)));
+                    }
+
                     //TableDataSource.Instance.CleanAllErrors();
 
                     var checker = new XsltChecker();
                     var result = checker.CheckFile(document.FilePath);
 
-                    var dte = (DTE)ServiceProvider.GetService(typeof(DTE));
+                    var dte = (DTE) ServiceProvider.GetService(typeof(DTE));
 
                     var projectItem = dte.Solution.FindProjectItem(fileName);
 

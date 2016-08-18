@@ -3,13 +3,16 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using Gardiner.XsltTools.Classification;
 using Gardiner.XsltTools.Utils;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace XsltEditor.Commands
+using XsltEditor.Commands;
+
+namespace Gardiner.XsltTools.Commands
 {
     internal class ImportHrefGoToDefinition : CommandTargetBase<VSConstants.VSStd97CmdID>
     {
@@ -57,15 +60,13 @@ namespace XsltEditor.Commands
             return true;
         }
 
-
-        private static readonly Regex regex = new Regex(@"\s*<xsl:import\s+href=(['""])(?<path>[^'""]+)\1(\s*/>)?");
         private string FindReferencedPath()
         {
             var position = TextView.Caret.Position.BufferPosition;
             var line = position.GetContainingLine();
             int linePos = position - line.Start.Position;
 
-            var match = regex.Matches(line.GetText())
+            var match = XsltClassifier.Regex.Matches(line.GetText())
                              .Cast<Match>()
                              .FirstOrDefault(m => m.Index <= linePos && m.Index + m.Length >= linePos);
 
