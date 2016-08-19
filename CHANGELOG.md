@@ -1,3 +1,7 @@
+# v1.2
+
+* Implement 'Go to definition' for `<xsl:import href="file" />` elements
+
 # v1.1.1
 
 * Bug fixes
