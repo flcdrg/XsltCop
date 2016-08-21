@@ -16,3 +16,16 @@ build_script:
 
 after_test:
 - ps: if ($env:GitVersion_BranchName -eq "master") { Vsix-PushArtifacts | Vsix-PublishToGallery }
+
+deploy:
+  release: v$(GitVersion_FullSemVer)
+  description: ''
+  provider: GitHub
+  auth_token:
+    secure: 3c0f97e0eac284c7d61a8d2f2ac8fa6be6cda51c
+  artifact: /.*\.vsix/            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
