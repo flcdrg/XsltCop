@@ -22,7 +22,7 @@ deploy:
   description: ''
   provider: GitHub
   auth_token:
-    secure: 3c0f97e0eac284c7d61a8d2f2ac8fa6be6cda51c
+    secure: AK/yvGPxuuam1cqWJIO6jiY2QP5XATL7mI/QGOlPMJ7008nNvlHu+YoxHOPBeHfZ
   artifact: /.*\.vsix/            # upload all NuGet packages to release assets
   draft: false
   prerelease: false
