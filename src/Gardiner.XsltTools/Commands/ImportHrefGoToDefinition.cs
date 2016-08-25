@@ -45,8 +45,10 @@ namespace Gardiner.XsltTools.Commands
             {
                 file = Path.GetFullPath(referencedPath);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                VSPackage.DTE.StatusBar.Text = $"Could not find file: \"{referencedPath}\", Error: {e.Message}";
+
                 return false;
             }
 

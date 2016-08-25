@@ -56,7 +56,7 @@ namespace Gardiner.XsltTools
         {
             try
             {
-                var textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
+                IWpfTextView textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
 
                 textView.Properties.GetOrCreateSingletonProperty(
                     () => new ImportHrefGoToDefinition(textViewAdapter, textView));
