@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-
-using JetBrains.Annotations;
 
 using Microsoft.Language.Xml;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
+using PropertyChanged;
+
 namespace Gardiner.XsltTools.Margins
 {
-    public class TopMarginViewModel : INotifyPropertyChanged
+    [ImplementPropertyChanged]
+    public class TopMarginViewModel
     {
         private readonly IWpfTextView _textView;
         private readonly ITextBuffer _dataBuffer;
         private TemplateModel _selectedValue;
-        private IList<TemplateModel> _templates;
         private bool _dontUpdateCaret;
         private XmlDocumentSyntax _syntax;
 
@@ -49,7 +47,6 @@ namespace Gardiner.XsltTools.Margins
                 Debug.WriteLine($"SelectedValue {value}");
                 _selectedValue = value;
                 TemplateListSelectionChanged(value);
-                OnPropertyChanged();
             }
         }
 
@@ -79,7 +76,6 @@ namespace Gardiner.XsltTools.Margins
             _dontUpdateCaret = true;
             SelectedValue = item;
             _dontUpdateCaret = false;
-
         }
 
         private void DataBufferOnPostChanged(object sender, EventArgs eventArgs)
@@ -88,32 +84,25 @@ namespace Gardiner.XsltTools.Margins
             UpdateList();
         }
 
+        [LogExceptions]
         private void UpdateList()
         {
-            try
-            {
-                var snapshot = _dataBuffer.CurrentSnapshot;
+            var snapshot = _dataBuffer.CurrentSnapshot;
 
-                var text = snapshot.GetText();
+            var text = snapshot.GetText();
 
-                _syntax = Parser.ParseText(text);
+            _syntax = Parser.ParseText(text);
 
-                var list = GetDescendants(_syntax)
-                    .OfType<XmlElementSyntax>()
-                    .Where(n => n.Name == "template")
-                    .Select(n => CreateTemplateModel(n.Attributes.ToList(), n))
-                    //.Where(m => m.Name != null && m.Mode != null && m.Match != null)
-                    .ToList();
+            var list = GetDescendants(_syntax)
+                .OfType<XmlElementSyntax>()
+                .Where(n => n.Name == "template")
+                .Select(n => CreateTemplateModel(n.Attributes.ToList(), n))
+                //.Where(m => m.Name != null && m.Mode != null && m.Match != null)
+                .ToList();
 
-                _dontUpdateCaret = true;
-                Templates = list;
-                _dontUpdateCaret = false;
-
-            }
-            catch (Exception ex)
-            {
-                Telemetry.Log(ex);
-            }
+            _dontUpdateCaret = true;
+            Templates = list;
+            _dontUpdateCaret = false;
         }
 
         public static IEnumerable<SyntaxNode> GetDescendants(SyntaxNode node)
@@ -140,30 +129,12 @@ namespace Gardiner.XsltTools.Margins
                 Mode = attributes.Where(a => a.Key == "mode").Select(a => a.Value).FirstOrDefault(),
                 Name = attributes.Where(a => a.Key == "name").Select(a => a.Value).FirstOrDefault(),
                 Match = attributes.Where(a => a.Key == "match").Select(a => a.Value).FirstOrDefault(),
-                Start = name.Start
+                Start = name.Start + name.GetLeadingTriviaWidth()
             };
             return item;
         }
 
-        public IList<TemplateModel> Templates
-        {
-            get { return _templates; }
-            set
-            {
-                if (Equals(value, _templates))
-                    return;
-                _templates = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public IList<TemplateModel> Templates { get; set; }
 
         public void TemplateListSelectionChanged(TemplateModel key)
         {
