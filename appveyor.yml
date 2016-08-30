@@ -1,11 +1,7 @@
 install:
   - choco install gitversion.portable -pre -y
   - ps: (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
-
-branches:
-  only:
-    - master
-  
+ 
 before_build: 
   - nuget restore
   - ps: gitversion /l console /output buildserver
