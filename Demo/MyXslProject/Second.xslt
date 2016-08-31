@@ -20,4 +20,11 @@
   <xsl:template mode="Things" match="MyThings">
 
   </xsl:template>
+
+<xsl:template mode="MoreThings" match="MoreThings">
+</xsl:template>
+
+  <xsl:template mode="blah" match="Another">
+  </xsl:template>
+
 </xsl:stylesheet>

@@ -47,37 +47,41 @@
       <HintPath>..\..\packages\ApprovalUtilities.3.0.11\lib\net45\ApprovalUtilities.Net45.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Language.Xml, Version=0.0.0.0, Culture=neutral, PublicKeyToken=d8943316a876e00f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Language.Xml.1.0.13\lib\net45\Microsoft.Language.Xml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.1\lib\Mono.Cecil.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Mdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\Mono.Cecil.Mdb.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.1\lib\Mono.Cecil.Mdb.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Pdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\Mono.Cecil.Pdb.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.1\lib\Mono.Cecil.Pdb.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Rocks, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\Mono.Cecil.Rocks.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.1\lib\Mono.Cecil.Rocks.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.engine, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\nunit.engine.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.1\lib\nunit.engine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.engine.api, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\nunit.engine.api.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.1\lib\nunit.engine.api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NUnit3.TestAdapter, Version=3.4.0.0, Culture=neutral, PublicKeyToken=4cb40d35494691ac, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.0\lib\NUnit3.TestAdapter.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="NUnit3.TestAdapter, Version=3.4.1.0, Culture=neutral, PublicKeyToken=4cb40d35494691ac, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit3TestAdapter.3.4.1\lib\NUnit3.TestAdapter.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -99,6 +103,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TopMarginViewModelTests.cs" />
+    <Compile Include="ParserTests.cs" />
     <Compile Include="XPathTreeBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

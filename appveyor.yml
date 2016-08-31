@@ -1,11 +1,7 @@
 install:
   - choco install gitversion.portable -pre -y
   - ps: (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
-
-branches:
-  only:
-    - master
-  
+ 
 before_build: 
   - nuget restore
   - ps: gitversion /l console /output buildserver
@@ -13,9 +9,6 @@ before_build:
 
 build_script:
   - msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
-
-after_test:
-- ps: if ($env:GitVersion_BranchName -eq "master") { Vsix-PushArtifacts | Vsix-PublishToGallery }
 
 deploy:
   release: v$(GitVersion_FullSemVer)
@@ -30,3 +23,6 @@ deploy:
   on:
     branch: master                 # release from master branch only
     appveyor_repo_tag: true        # deploy on tag push only
+
+after_deploy:
+- ps: if ($env:GitVersion_BranchName -eq "master") { Vsix-PushArtifacts | Vsix-PublishToGallery }
