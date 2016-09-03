@@ -19,8 +19,6 @@ namespace Gardiner.XsltTools.Classification
 
         internal static readonly Regex Regex = new Regex(@"<xsl:\w*\s+href=(['""])(?<path>[^'""]+)\1(\s*/>)?");
 
-        //private static readonly Regex regex = new Regex(@"David");
-
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
             var list = new List<ClassificationSpan>();
@@ -31,7 +29,6 @@ namespace Gardiner.XsltTools.Classification
             foreach (Match match in matches)
             {
                 var group = match.Groups["path"];
-                //if (index == -1 || match.Index < index)
                 {
                    
                     var result = new SnapshotSpan(span.Snapshot, span.Start + group.Index, group.Length);

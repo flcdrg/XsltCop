@@ -27,7 +27,7 @@ namespace Gardiner.XsltTools.Utils
         ///<summary>Gets the Solution Items solution folder in the current solution, creating it if it doesn't exist.</summary>
         public static Project GetSolutionItemsProject()
         {
-            Solution2 solution = (Solution2) VSPackage.DTE.Solution;
+            var solution = (Solution2) VSPackage.DTE.Solution;
             return solution.Projects
                            .OfType<Project>()
                            .FirstOrDefault(p => p.Name.Equals(SolutionItemsFolder, StringComparison.OrdinalIgnoreCase))
@@ -64,24 +64,6 @@ namespace Gardiner.XsltTools.Utils
                     .SelectMany(p => GetChildProjects(p.SubProject));
         }
 
-        ///<summary>Indicates whether a Project is a Web Application, Web Site, or WinJS project.</summary>
-        public static bool IsWebProject(this Project project)
-        {
-            // Web site project
-            if (project.Kind.Equals("{E24C65DC-7377-472B-9ABA-BC803B73C61A}", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            // Check for Web Application projects.  See https://github.com/madskristensen/WebEssentials2015/pull/140#issuecomment-26679862
-            try
-            {
-                return project.Properties.Item("WebApplication.UseIISExpress") != null;
-            }
-            catch (ArgumentException)
-            { }
-
-            return false;
-        }
-
         ///<summary>Gets the base directory of a specific Project, or of the active project if no parameter is passed.</summary>
         public static string GetRootFolder(Project project = null)
         {
@@ -89,10 +71,10 @@ namespace Gardiner.XsltTools.Utils
             {
                 project = project ?? GetActiveProject();
 
-                if (project == null || project.Collection == null)
+                if (project?.Collection == null)
                 {
                     var doc = VSPackage.DTE.ActiveDocument;
-                    if (doc != null && !string.IsNullOrEmpty(doc.FullName))
+                    if (!string.IsNullOrEmpty(doc?.FullName))
                         return GetProjectFolder(doc.FullName);
                     return string.Empty;
                 }
@@ -129,7 +111,6 @@ namespace Gardiner.XsltTools.Utils
             }
             catch (Exception)
             {
-                //Logger.Log(ex);
                 return string.Empty;
             }
         }
@@ -156,7 +137,10 @@ namespace Gardiner.XsltTools.Utils
 
                 item.Properties.Item("ItemType").Value = itemType;
             }
-            catch { }
+            catch
+            {
+                //
+            }
         }
 
         ///<summary>Gets the currently active project (as reported by the Solution Explorer), if any.</summary>
@@ -171,7 +155,7 @@ namespace Gardiner.XsltTools.Utils
             }
             catch (Exception)
             {
-                //Logger.Log("Error getting the active project" + ex);
+                //
             }
 
             return null;
@@ -182,7 +166,7 @@ namespace Gardiner.XsltTools.Utils
         public static string ToAbsoluteFilePath(string relativeUrl, string relativeToFile)
         {
             var file = GetProjectItem(relativeToFile);
-            if (file == null || file.Properties == null)
+            if (file?.Properties == null)
                 return ToAbsoluteFilePath(relativeUrl, GetRootFolder(), Path.GetDirectoryName(relativeToFile));
             return ToAbsoluteFilePath(relativeUrl, GetProjectFolder(file), Path.GetDirectoryName(relativeToFile));
         }
@@ -199,7 +183,7 @@ namespace Gardiner.XsltTools.Utils
             if (file == null)
                 return null;
 
-            var baseFolder = file.Properties == null ? null : ProjectHelpers.GetProjectFolder(file);
+            var baseFolder = file.Properties == null ? null : GetProjectFolder(file);
             return ToAbsoluteFilePath(relativeUrl, GetProjectFolder(file), baseFolder);
         }
 
@@ -209,7 +193,7 @@ namespace Gardiner.XsltTools.Utils
         ///<param name="baseFolder">The source directory to resolve relative URLs from.</param>
         public static string ToAbsoluteFilePath(string relativeUrl, string projectRoot, string baseFolder)
         {
-            string imageUrl = relativeUrl.Trim(new[] { '\'', '"' });
+            string imageUrl = relativeUrl.Trim('\'', '"');
             var relUri = new Uri(imageUrl, UriKind.RelativeOrAbsolute);
 
             if (relUri.IsAbsoluteUri)
@@ -262,17 +246,16 @@ namespace Gardiner.XsltTools.Utils
         public static IWpfTextView GetCurentTextView()
         {
             var componentModel = GetComponentModel();
-            if (componentModel == null) return null;
-            var editorAdapter = componentModel.GetService<IVsEditorAdaptersFactoryService>();
+            var editorAdapter = componentModel?.GetService<IVsEditorAdaptersFactoryService>();
 
-            return editorAdapter.GetWpfTextView(GetCurrentNativeTextView());
+            return editorAdapter?.GetWpfTextView(GetCurrentNativeTextView());
         }
 
         public static IVsTextView GetCurrentNativeTextView()
         {
             var textManager = (IVsTextManager)ServiceProvider.GlobalProvider.GetService(typeof(SVsTextManager));
 
-            IVsTextView activeView = null;
+            IVsTextView activeView;
             ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out activeView));
             return activeView;
         }
@@ -301,7 +284,7 @@ namespace Gardiner.XsltTools.Utils
             {
                 var item = selItem.Object as ProjectItem;
 
-                if (item != null && item.Properties != null)
+                if (item?.Properties != null)
                     yield return item.Properties.Item("FullPath").Value.ToString();
             }
         }
@@ -321,7 +304,7 @@ namespace Gardiner.XsltTools.Utils
 
         ///<summary>Attempts to ensure that a file is writable.</summary>
         /// <returns>True if the file is not under source control or was checked out; false if the checkout failed or an error occurred.</returns>
-        public static bool CheckOutFileFromSourceControl(string fileName)
+        internal static bool CheckOutFileFromSourceControl(string fileName)
         {
             try
             {
@@ -337,16 +320,14 @@ namespace Gardiner.XsltTools.Utils
             }
             catch (Exception)
             {
-                System.Diagnostics.Debugger.Launch();
-                //Logger.Log(ex);
                 return false;
             }
         }
 
         ///<summary>Gets the directory containing the active solution file.</summary>
-        public static string GetSolutionFolderPath()
+        internal static string GetSolutionFolderPath()
         {
-            EnvDTE.Solution solution = VSPackage.DTE.Solution;
+            var solution = VSPackage.DTE.Solution;
 
             if (solution == null)
                 return null;
@@ -360,7 +341,7 @@ namespace Gardiner.XsltTools.Utils
         ///<summary>Gets the directory containing the project for the specified file.</summary>
         private static string GetProjectFolder(ProjectItem item)
         {
-            if (item == null || item.ContainingProject == null || item.ContainingProject.Collection == null || string.IsNullOrEmpty(item.ContainingProject.FullName)) // Solution items
+            if (item?.ContainingProject?.Collection == null || string.IsNullOrEmpty(item.ContainingProject.FullName)) // Solution items
                 return null;
 
             return GetRootFolder(item.ContainingProject);
@@ -415,10 +396,7 @@ namespace Gardiner.XsltTools.Utils
         {
             var projectItem = GetProjectItem(item);
 
-            if (projectItem == null)
-                return null;
-
-            return projectItem.ContainingProject;
+            return projectItem?.ContainingProject;
         }
 
         public static ProjectItem GetActiveFile()
@@ -442,8 +420,6 @@ namespace Gardiner.XsltTools.Utils
             }
             catch (Exception)
             {
-                //Logger.Log(exception.Message);
-
                 return null;
             }
         }
@@ -457,7 +433,7 @@ namespace Gardiner.XsltTools.Utils
 
             var item = GetProjectItem(parentFileName);
 
-            if (item == null || item.ContainingProject == null || string.IsNullOrEmpty(item.ContainingProject.FullName))
+            if (string.IsNullOrEmpty(item?.ContainingProject?.FullName))
                 return null;
 
             var dependentItem = GetProjectItem(fileName);
@@ -475,7 +451,10 @@ namespace Gardiner.XsltTools.Utils
                     if (Path.GetDirectoryName(parentFileName) == Path.GetDirectoryName(fileName))
                         addedItem.Properties.Item("DependentUpon").Value = Path.GetFileName(parentFileName);
                 }
-                catch (COMException) { }
+                catch (COMException)
+                {
+                    //
+                }
                 catch { return dependentItem; }
 
                 return addedItem;
@@ -489,7 +468,10 @@ namespace Gardiner.XsltTools.Utils
                 {
                     return item.ProjectItems.AddFromFile(fileName);
                 }
-                catch (COMException) { }
+                catch (COMException)
+                {
+                    //
+                }
             }
             else if (Path.GetFullPath(fileName).StartsWith(GetRootFolder(item.ContainingProject), StringComparison.OrdinalIgnoreCase))
             {   // Website
@@ -497,7 +479,10 @@ namespace Gardiner.XsltTools.Utils
                 {
                     return item.ContainingProject.ProjectItems.AddFromFile(fileName);
                 }
-                catch (COMException) { }
+                catch (COMException)
+                {
+                    //
+                }
             }
 
             return null;
@@ -530,7 +515,7 @@ namespace Gardiner.XsltTools.Utils
              && !settingsPath.StartsWith("/", StringComparison.OrdinalIgnoreCase))
                 return Path.GetFullPath(Path.Combine(sourceDir, settingsPath, targetFileName));
 
-            string rootDir = ProjectHelpers.GetRootFolder();
+            string rootDir = GetRootFolder();
 
             if (string.IsNullOrEmpty(rootDir))
                 // If no project is loaded, assume relative to file anyway

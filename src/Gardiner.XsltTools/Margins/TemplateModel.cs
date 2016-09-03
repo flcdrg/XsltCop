@@ -1,5 +1,7 @@
 ﻿using System;
 
+using NullGuard;
+
 namespace Gardiner.XsltTools.Margins
 {
     public class TemplateModel
@@ -14,15 +16,13 @@ namespace Gardiner.XsltTools.Margins
             return string.Equals(Name, other.Name, StringComparison.InvariantCulture) && string.Equals(Mode, other.Mode, StringComparison.InvariantCulture) && string.Equals(Match, other.Match, StringComparison.InvariantCulture);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals([AllowNull] object obj)
         {
             if (ReferenceEquals(null, obj))
                 return false;
             if (ReferenceEquals(this, obj))
                 return true;
-            if (obj.GetType() != this.GetType())
-                return false;
-            return Equals((TemplateModel) obj);
+            return obj.GetType() == GetType() && Equals((TemplateModel) obj);
         }
 
         public override int GetHashCode()

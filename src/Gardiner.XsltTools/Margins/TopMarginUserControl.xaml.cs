@@ -18,10 +18,5 @@ namespace Gardiner.XsltTools.Margins
         {
             DataContext = viewModel;
         }
-
-        private void TemplateList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //Debug.WriteLine("TemplateList_OnSelectionChanged");
-        }
     }
 }

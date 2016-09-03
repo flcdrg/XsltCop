@@ -19,6 +19,8 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using NullGuard;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Gardiner.XsltTools
@@ -66,7 +68,7 @@ namespace Gardiner.XsltTools
 
         public static Options Options { get; private set; }
 
-        public int OnBeforeCloseSolution(object pUnkReserved)
+        public int OnBeforeCloseSolution([AllowNull] object pUnkReserved)
         {
             TableDataSource.Instance.CleanAllErrors();
             return VSConstants.S_OK;
@@ -89,8 +91,10 @@ namespace Gardiner.XsltTools
                 processor.Process(pHierProj, name);
 
 #if DEBUG
+#pragma warning disable S125 // Sections of code should not be "commented out"
                 // For testing telemetry
-                //throw new InvalidOperationException("Oh dear");
+                // throw new InvalidOperationException("Oh dear");
+#pragma warning restore S125 // Sections of code should not be "commented out"
 
 #endif
             }

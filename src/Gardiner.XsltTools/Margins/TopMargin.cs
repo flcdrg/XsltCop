@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
+using JetBrains.Annotations;
+
 using Microsoft.VisualStudio.Text.Editor;
 
 namespace Gardiner.XsltTools.Margins
@@ -36,9 +38,6 @@ namespace Gardiner.XsltTools.Margins
             ClipToBounds = true;
 
             _visualElement = new TopMarginUserControl(new TopMarginViewModel(textView));
-
-
-            //this.Background = new SolidColorBrush(Colors.LightGreen);
         }
 
         #region IWpfTextViewMargin

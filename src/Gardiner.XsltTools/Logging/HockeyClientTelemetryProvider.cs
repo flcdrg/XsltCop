@@ -40,8 +40,8 @@ namespace Gardiner.XsltTools.Logging
                 {
                     // We must only call Configure once
                     _hockeyClient.Configure("bb59fd06bb2a42aab4dff8125de22209");
-                        // Suspect this is tracking ANY exception in Visual Studio - not just from our code
-                        //.RegisterDefaultUnobservedTaskExceptionHandler();
+                    // Suspect this is tracking ANY exception in Visual Studio - not just from our code 
+                    // RegisterDefaultUnobservedTaskExceptionHandler()
                 }
                 var helper = new HockeyPlatformHelperWPF();
 
@@ -70,16 +70,6 @@ namespace Gardiner.XsltTools.Logging
                     }
                 };
 #endif
-
-                /*
-                // TrackEvent is not yet supported for WPF
-
-                var telemetry = new EventTelemetry("Usage");
-                telemetry.Properties.Add("OperatingSystem", crashLogInfo.OperatingSystem);
-                telemetry.Properties.Add("Visual Studio", crashLogInfo.Model);
-                telemetry.Properties.Add("Version", crashLogInfo.Version);
-                _hockeyClient.TrackEvent(telemetry);
-                */
 
                 await _hockeyClient.SendCrashesAsync(true).ConfigureAwait(true);
 

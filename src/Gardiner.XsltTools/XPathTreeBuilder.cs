@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
 using CodePlex.XPathParser;
+
+using NullGuard;
 
 namespace Gardiner.XsltTools
 {
@@ -11,15 +12,16 @@ namespace Gardiner.XsltTools
     {
         public void StartBuild()
         {
+            //
         }
 
-        public XElement EndBuild(XElement result)
+        public XElement EndBuild([AllowNull] XElement result)
         {
             return result;
         }
 
 #pragma warning disable CA1720 // Identifier contains type name
-        public XElement String(string value)
+        public XElement String([AllowNull] string value)
 #pragma warning restore CA1720 // Identifier contains type name
         {
             return new XElement("string", new XAttribute("value", value));
@@ -30,7 +32,7 @@ namespace Gardiner.XsltTools
             return new XElement("number", new XAttribute("value", value));
         }
 
-        public XElement Operator(XPathOperator op, XElement left, XElement right)
+        public XElement Operator(XPathOperator op, [AllowNull] XElement left, [AllowNull] XElement right)
         {
             if (op == XPathOperator.UnaryMinus)
             {
@@ -42,7 +44,7 @@ namespace Gardiner.XsltTools
 #pragma warning restore CA1305 // This rule is invalid for Enum
         }
 
-        public XElement Axis(XPathAxis xpathAxis, XPathNodeType nodeType, string prefix, string name)
+        public XElement Axis(XPathAxis xpathAxis, XPathNodeType nodeType, [AllowNull] string prefix, [AllowNull] string name)
         {
 #pragma warning disable CA1305 // This rule is invalid for Enum
             return new XElement(xpathAxis.ToString(),
@@ -65,7 +67,7 @@ namespace Gardiner.XsltTools
                 );
         }
 
-        public XElement Variable(string prefix, string name)
+        public XElement Variable([AllowNull] string prefix, [AllowNull] string name)
         {
             return new XElement("variable",
                 new XAttribute("prefix", prefix ?? "(null)"),
@@ -73,7 +75,7 @@ namespace Gardiner.XsltTools
                 );
         }
 
-        public XElement Function(string prefix, string name, IList<XElement> args)
+        public XElement Function([AllowNull] string prefix, [AllowNull] string name, IList<XElement> args)
         {
             var xe = new XElement("function",
                 new XAttribute("prefix", prefix ?? "(null)"),

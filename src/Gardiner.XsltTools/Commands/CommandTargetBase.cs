@@ -18,10 +18,11 @@ namespace XsltEditor.Commands
         public Guid CommandGroup { get; set; }
         public ReadOnlyCollection<uint> CommandIds { get; private set; }
 
-        public CommandTargetBase(IVsTextView adapter, IWpfTextView textView, params TCommandEnum[] commandIds)
+        protected CommandTargetBase(IVsTextView adapter, IWpfTextView textView, params TCommandEnum[] commandIds)
             : this(adapter, textView, typeof(TCommandEnum).GUID, Array.ConvertAll(commandIds, e => Convert.ToUInt32(e, CultureInfo.InvariantCulture)))
         { }
-        public CommandTargetBase(IVsTextView adapter, IWpfTextView textView, Guid commandGroup, params uint[] commandIds)
+
+        protected CommandTargetBase(IVsTextView adapter, IWpfTextView textView, Guid commandGroup, params uint[] commandIds)
         {
             CommandGroup = commandGroup;
             CommandIds = new ReadOnlyCollection<uint>(commandIds);

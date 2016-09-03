@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using NullGuard;
+
 namespace Gardiner.XsltTools
 {
     public sealed partial class XsltToolPackage
@@ -25,7 +27,7 @@ namespace Gardiner.XsltTools
             return VSConstants.S_OK;
         }
 
-        int IVsUpdateSolutionEvents2.OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
+        int IVsUpdateSolutionEvents2.OnActiveProjectCfgChange([AllowNull] IVsHierarchy pIVsHierarchy)
         {
             return VSConstants.S_OK;
         }
@@ -50,12 +52,12 @@ namespace Gardiner.XsltTools
             return VSConstants.S_OK;
         }
 
-        int IVsUpdateSolutionEvents.OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
+        int IVsUpdateSolutionEvents.OnActiveProjectCfgChange([AllowNull] IVsHierarchy pIVsHierarchy)
         {
             return VSConstants.S_OK;
         }
 
-        public int UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction,
+        public int UpdateProjectCfg_Done([AllowNull] IVsHierarchy pHierProj, [AllowNull] IVsCfg pCfgProj, [AllowNull] IVsCfg pCfgSln, uint dwAction,
     int fSuccess,
     int fCancel)
         {

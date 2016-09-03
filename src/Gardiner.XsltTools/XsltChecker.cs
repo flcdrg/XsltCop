@@ -18,10 +18,14 @@ namespace Gardiner.XsltTools
         {
             var violations = new List<Rule>();
 
-            Debug.WriteLine(filename);
-            var text = File.ReadAllText(filename);
             try
             {
+                Debug.WriteLine(filename);
+                if (!File.Exists(filename))
+                    return null;
+
+                var text = File.ReadAllText(filename);
+
                 var doc = XDocument.Parse(text, LoadOptions.SetLineInfo | LoadOptions.PreserveWhitespace);
 
                 const string xsl = "http://www.w3.org/1999/XSL/Transform";

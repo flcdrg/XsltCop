@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
 using EnvDTE80;
+
+using JetBrains.Annotations;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -21,21 +22,21 @@ namespace Gardiner.XsltTools.Utils
         ///<summary>Gets the currently selected point within a specific buffer type, or null if there is no selection or if the selection is in a different buffer.</summary>
         ///<param name="view">The TextView containing the selection</param>
         ///<param name="contentType">The ContentType to filter the selection by.</param>
-        public static SnapshotPoint? GetSelection(this ITextView view, string contentType)
+        public static SnapshotPoint? GetSelection([NotNull] this ITextView view, string contentType)
         {
             return view.BufferGraph.MapDownToInsertionPoint(view.Caret.Position.BufferPosition, PointTrackingMode.Positive, ts => ts.ContentType.IsOfType(contentType));
         }
         ///<summary>Gets the currently selected point within a specific buffer type, or null if there is no selection or if the selection is in a different buffer.</summary>
         ///<param name="view">The TextView containing the selection</param>
         ///<param name="contentTypes">The ContentTypes to filter the selection by.</param>
-        public static SnapshotPoint? GetSelection(this ITextView view, params string[] contentTypes)
+        public static SnapshotPoint? GetSelection([NotNull] this ITextView view, params string[] contentTypes)
         {
             return view.BufferGraph.MapDownToInsertionPoint(view.Caret.Position.BufferPosition, PointTrackingMode.Positive, ts => contentTypes.Any(c => ts.ContentType.IsOfType(c)));
         }
         ///<summary>Gets the currently selected point within a specific buffer type, or null if there is no selection or if the selection is in a different buffer.</summary>
         ///<param name="view">The TextView containing the selection</param>
         ///<param name="contentTypeFilter">The ContentType to filter the selection by.</param>
-        public static SnapshotPoint? GetSelection(this ITextView view, Func<IContentType, bool> contentTypeFilter)
+        public static SnapshotPoint? GetSelection([NotNull] this ITextView view, Func<IContentType, bool> contentTypeFilter)
         {
             return view.BufferGraph.MapDownToInsertionPoint(view.Caret.Position.BufferPosition, PointTrackingMode.Positive, ts => contentTypeFilter(ts.ContentType));
         }
@@ -60,26 +61,13 @@ namespace Gardiner.XsltTools.Utils
                    ).FirstOrDefault();
         }
 
-        public static void GzipFile(string sourcePath)
-        {
-            var gzipPath = sourcePath + ".gzip";
-            ProjectHelpers.CheckOutFileFromSourceControl(gzipPath);
-
-            using (var sourceStream = File.OpenRead(sourcePath))
-            using (var targetStream = File.OpenWrite(gzipPath))
-            using (var gzipStream = new GZipStream(targetStream, CompressionMode.Compress))
-                sourceStream.CopyTo(gzipStream);
-
-            ProjectHelpers.AddFileToProject(sourcePath, gzipPath);
-        }
-
         public static void OpenFileInPreviewTab(string file)
         {
             IVsNewDocumentStateContext newDocumentStateContext = null;
 
             try
             {
-                IVsUIShellOpenDocument3 openDoc3 = VSPackage.GetGlobalService<SVsUIShellOpenDocument>() as IVsUIShellOpenDocument3;
+                var openDoc3 = (IVsUIShellOpenDocument3) VSPackage.GetGlobalService<SVsUIShellOpenDocument>();
 
                 Guid reason = VSConstants.NewDocumentStateReason.Navigation;
                 newDocumentStateContext = openDoc3.SetNewDocumentState((uint)__VSNEWDOCUMENTSTATE.NDS_Provisional, ref reason);
@@ -88,30 +76,9 @@ namespace Gardiner.XsltTools.Utils
             }
             finally
             {
-                if (newDocumentStateContext != null)
-                    newDocumentStateContext.Restore();
+                newDocumentStateContext?.Restore();
             }
         }
-
-        //public static string ShowDialog(string extension, string fileName = "file.")
-        //{
-        //    var initialPath = Path.GetDirectoryName(WebEssentialsPackage.DTE.ActiveDocument.FullName);
-
-        //    using (var dialog = new SaveFileDialog())
-        //    {
-        //        dialog.FileName = fileName + extension;
-        //        dialog.DefaultExt = extension;
-        //        dialog.Filter = extension.ToUpperInvariant() + " files | *." + extension;
-        //        dialog.InitialDirectory = initialPath;
-
-        //        if (dialog.ShowDialog() == DialogResult.OK)
-        //        {
-        //            return dialog.FileName;
-        //        }
-        //    }
-
-        //    return null;
-        //}
 
         public static string GetExtension(string mimeType)
         {
@@ -149,62 +116,7 @@ namespace Gardiner.XsltTools.Utils
             return null;
         }
 
-        private static string GetMimeTypeFromFileExtension(string extension)
-        {
-            string ext = extension.TrimStart('.');
-
-            switch (ext)
-            {
-                case "jpg":
-                case "jpeg":
-                    return "image/jpeg";
-                case "svg":
-                    return "image/svg+xml";
-                case "png":
-                case "gif":
-                case "tiff":
-                case "webp":
-                case "bmp":
-                    return "image/" + ext;
-
-                case "woff":
-                    return "font/x-woff";
-
-                case "woff2":
-                    return "font/x-woff2";
-
-                case "otf":
-                    return "font/otf";
-
-                case "eot":
-                    return "application/vnd.ms-fontobject";
-
-                case "ttf":
-                    return "application/octet-stream";
-
-                default:
-                    return "text/plain";
-            }
-        }
-
-        //public async static Task<bool> SaveDataUriToFile(string dataUri, string filePath)
-        //{
-        //    try
-        //    {
-        //        int index = dataUri.IndexOf("base64,", StringComparison.Ordinal) + 7;
-        //        byte[] imageBytes = Convert.FromBase64String(dataUri.Substring(index));
-        //        await FileHelpers.WriteAllBytesRetry(filePath, imageBytes);
-        //        ProjectHelpers.AddFileToActiveProject(filePath);
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.ShowMessage(ex.Message, "Web Essentials " + ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        return false;
-        //    }
-        //}
-
-        public static string GetMimeTypeFromBase64(string base64)
+        public static string GetMimeTypeFromBase64([NotNull] string base64)
         {
             int end = base64.IndexOf(';');
 
@@ -216,9 +128,9 @@ namespace Gardiner.XsltTools.Utils
             return string.Empty;
         }
 
-        static char[] pathSplit = { '/', '\\' };
+        static readonly char[] pathSplit = { '/', '\\' };
 
-        public static string RelativePath(string absolutePath, string relativeTo)
+        public static string RelativePath([NotNull] string absolutePath, [NotNull] string relativeTo)
         {
             relativeTo = relativeTo.Replace("\\/", "\\");
 
@@ -298,7 +210,7 @@ namespace Gardiner.XsltTools.Utils
         ///    The string returned by System.IO.Path.GetFileName(System.String), minus the
         //     first period (.) and all characters following it.
         /// </returns>
-        public static string GetFileNameWithoutExtension(string path)
+        public static string GetFileNameWithoutExtension([NotNull] string path)
         {
             var fileNameWithoutPath = Path.GetFileName(path);
 
@@ -311,7 +223,7 @@ namespace Gardiner.XsltTools.Utils
         /// <param name="fileName">Name of the file to check.</param>
         /// <param name="extensions">The extensions to append to the file name to also check.</param>
         /// <returns>The colliding file name if there is one, else <see langword="null"/>.</returns>
-        public static string GetFileCollisions(string fileName, params string[] extensions)
+        public static string GetFileCollisions([NotNull] string fileName, params string[] extensions)
         {
             return File.Exists(fileName)
                  ? fileName

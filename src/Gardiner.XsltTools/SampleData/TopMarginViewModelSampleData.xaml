@@ -1,0 +1,10 @@
+﻿<Margins:TopMarginViewModel xmlns:Margins="clr-namespace:Gardiner.XsltTools.Margins">
+    <Margins:TopMarginViewModel.SelectedValue>
+        <Margins:TemplateModel Mode="a" Start="2" Name="a" Match="asdf"/>
+    </Margins:TopMarginViewModel.SelectedValue>
+    <Margins:TopMarginViewModel.Templates>
+        <Margins:TemplateModel Mode="a" Start="2" Name="a" Match="asdf"/>
+        <Margins:TemplateModel Mode="ctx" Start="3" Name="sdf" Match="aaaa"/>
+        <Margins:TemplateModel Mode="ctx" Start="3" Name="sdf" Match="aaaa"/>
+    </Margins:TopMarginViewModel.Templates>
+</Margins:TopMarginViewModel>

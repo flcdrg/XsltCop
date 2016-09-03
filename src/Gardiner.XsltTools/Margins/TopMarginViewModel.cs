@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -7,12 +8,14 @@ using Microsoft.Language.Xml;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
+using NullGuard;
+
 using PropertyChanged;
 
 namespace Gardiner.XsltTools.Margins
 {
     [ImplementPropertyChanged]
-    public class TopMarginViewModel
+    public sealed class TopMarginViewModel : IDisposable
     {
         private readonly IWpfTextView _textView;
         private readonly ITextBuffer _dataBuffer;
@@ -96,12 +99,12 @@ namespace Gardiner.XsltTools.Margins
             var list = GetDescendants(_syntax)
                 .OfType<XmlElementSyntax>()
                 .Where(n => n.Name == "template")
-                .Select(n => CreateTemplateModel(n.Attributes.ToList(), n))
+                .Select(n => CreateTemplateModel(n.Attributes.ToList(), n));
                 //.Where(m => m.Name != null && m.Mode != null && m.Match != null)
-                .ToList();
+                
 
             _dontUpdateCaret = true;
-            Templates = list;
+            Templates = new ObservableCollection<TemplateModel>(list);
             _dontUpdateCaret = false;
         }
 
@@ -134,15 +137,24 @@ namespace Gardiner.XsltTools.Margins
             return item;
         }
 
-        public IList<TemplateModel> Templates { get; set; }
+        public ObservableCollection<TemplateModel> Templates { get; private set; }
 
-        public void TemplateListSelectionChanged(TemplateModel key)
+        public void TemplateListSelectionChanged([AllowNull] TemplateModel key)
         {
             if (_dontUpdateCaret || key == null)
                 return;
 
             var snapshotPoint = new SnapshotPoint(_dataBuffer.CurrentSnapshot, key.Start);
             _textView.Caret.MoveTo(snapshotPoint);
+        }
+
+        public void Dispose()
+        {
+            Debug.WriteLine("Dispose " + nameof(TopMarginViewModel));
+
+            _dataBuffer.PostChanged -= DataBufferOnPostChanged;
+            _textView.Caret.PositionChanged -= OnCaretChanged;
+
         }
     }
 }

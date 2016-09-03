@@ -39,11 +39,7 @@ namespace Gardiner.XsltTools.ErrorList
                 {
                     content = Errors[index].FileName;
                 }
-                else if (columnName == StandardTableKeyNames.ErrorCategory)
-                {
-                    content = Vsix.Name;
-                }
-                else if (columnName == StandardTableKeyNames.ErrorSource)
+                else if (columnName == StandardTableKeyNames.ErrorCategory || columnName == StandardTableKeyNames.ErrorSource || columnName == StandardTableKeyNames.BuildTool)
                 {
                     content = Vsix.Name;
                 }
@@ -55,20 +51,10 @@ namespace Gardiner.XsltTools.ErrorList
                 {
                     content = Errors[index].Column;
                 }
-                else if (columnName == StandardTableKeyNames.Text)
-                {
-                    content = Errors[index].Description;
-                }
                 else if (columnName == StandardTableKeyNames.FullText || columnName == StandardTableKeyNames.Text)
                 {
                     content = Errors[index].Description;
                 }
-/*
-                else if (columnName == StandardTableKeyNames.PriorityImage || columnName == StandardTableKeyNames.ErrorSeverityImage)
-                {
-                    content = KnownMonikers.Accessibility;
-                }
-*/
                 else if (columnName == StandardTableKeyNames.ErrorSeverity)
                 {
                     content = Errors[index].GetSeverity();
@@ -80,10 +66,6 @@ namespace Gardiner.XsltTools.ErrorList
                 else if (columnName == StandardTableKeyNames.ErrorSource)
                 {
                     content = ErrorSource.Other;
-                }
-                else if (columnName == StandardTableKeyNames.BuildTool)
-                {
-                    content = Vsix.Name;
                 }
                 else if (columnName == StandardTableKeyNames.ErrorCode)
                 {

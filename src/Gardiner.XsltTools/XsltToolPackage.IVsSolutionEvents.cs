@@ -1,51 +1,53 @@
 ﻿using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using NullGuard;
+
 namespace Gardiner.XsltTools
 {
     public sealed partial class XsltToolPackage
     {
-        public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
+        public int OnAfterOpenProject([AllowNull] IVsHierarchy pHierarchy, int fAdded)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
+        public int OnQueryCloseProject([AllowNull] IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
+        public int OnBeforeCloseProject([AllowNull] IVsHierarchy pHierarchy, int fRemoved)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
+        public int OnAfterLoadProject([AllowNull] IVsHierarchy pStubHierarchy, [AllowNull] IVsHierarchy pRealHierarchy)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
+        public int OnQueryUnloadProject([AllowNull] IVsHierarchy pRealHierarchy, ref int pfCancel)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
+        public int OnBeforeUnloadProject([AllowNull] IVsHierarchy pRealHierarchy, [AllowNull] IVsHierarchy pStubHierarchy)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
+        public int OnAfterOpenSolution([AllowNull] object pUnkReserved, int fNewSolution)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
+        public int OnQueryCloseSolution([AllowNull] object pUnkReserved, ref int pfCancel)
         {
             return VSConstants.S_OK;
         }
 
-        public int OnAfterCloseSolution(object pUnkReserved)
+        public int OnAfterCloseSolution([AllowNull] object pUnkReserved)
         {
             return VSConstants.S_OK;
         }

@@ -1,5 +1,7 @@
 using System.ComponentModel.Composition;
 
+using JetBrains.Annotations;
+
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
@@ -13,7 +15,7 @@ namespace Gardiner.XsltTools.Classification
         private readonly IClassificationType[] _types;
 
         [ImportingConstructor]
-        public XsltClassifierProvider(IClassificationTypeRegistryService classificationTypeRegistryService)
+        public XsltClassifierProvider([NotNull] IClassificationTypeRegistryService classificationTypeRegistryService)
         {
             _types = new[]
             {

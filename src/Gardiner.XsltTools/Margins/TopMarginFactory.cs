@@ -1,10 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="TopMarginFactory.cs" company="Company">
-//     Copyright (c) Company.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
+﻿using System.ComponentModel.Composition;
 
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
 
