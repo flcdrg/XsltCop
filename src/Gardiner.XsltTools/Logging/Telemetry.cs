@@ -4,7 +4,7 @@ using EnvDTE;
 
 using EnvDTE80;
 
-namespace Gardiner.XsltTools
+namespace Gardiner.XsltTools.Logging
 {
     #pragma warning disable CA1724 // Type Names Should Not Match Namespaces
     public static class Telemetry

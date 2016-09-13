@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Gardiner.XsltTools
+namespace Gardiner.XsltTools.Logging
 {
     /// <remarks>
     /// From https://github.com/madskristensen/WebAccessibilityChecker/blob/master/src/Helpers/Logger.cs

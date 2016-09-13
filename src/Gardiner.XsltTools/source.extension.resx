@@ -121,9 +121,11 @@
     <value>XsltCop</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Static analysis tool to enhance editing and checking for common mistakes in XSLT files.
+    <value>XSLT Editor enhancements and static analysis tool. 
 
-Runs on Build, and lists any rule violations in the Error List window</value>
+Navigation, refactoring and checking for common mistakes in XSLT files.
+
+Static analysis runs on Build, and lists any rule violations in the Error List window</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

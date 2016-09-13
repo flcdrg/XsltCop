@@ -12,6 +12,7 @@ using EnvDTE;
 using EnvDTE80;
 
 using Gardiner.XsltTools.ErrorList;
+using Gardiner.XsltTools.Logging;
 using Gardiner.XsltTools.Properties;
 
 using Microsoft.VisualStudio;
@@ -88,7 +89,7 @@ namespace Gardiner.XsltTools
                 processor.Process(pHierProj, name);
 
                 // For testing telemetry
-                //throw new InvalidOperationException("Oh dear");
+                throw new InvalidOperationException("Oh dear");
             }
             catch (Exception ex)
             {
