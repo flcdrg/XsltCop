@@ -10,6 +10,8 @@ process {
 
     $version = New-Object Version ([int]$version.Major),([int]$version.Minor),([System.Math]::Max([int]$version.Build, 0)),$env:APPVEYOR_BUILD_NUMBER
 
+    $env:VsixVersion = "$version"
+	
     foreach($manifestFile in $manifestFilePath)
     {
         "Setting VSIX version..." | Write-Host  -ForegroundColor Cyan -NoNewline
