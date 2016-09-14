@@ -88,8 +88,11 @@ namespace Gardiner.XsltTools
                 var processor = new ProcessHierarchy();
                 processor.Process(pHierProj, name);
 
+#if DEBUG
                 // For testing telemetry
-                throw new InvalidOperationException("Oh dear");
+                //throw new InvalidOperationException("Oh dear");
+
+#endif
             }
             catch (Exception ex)
             {
