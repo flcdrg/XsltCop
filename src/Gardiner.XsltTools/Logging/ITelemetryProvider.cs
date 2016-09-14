@@ -1,6 +1,6 @@
 using System;
 
-namespace Gardiner.XsltTools
+namespace Gardiner.XsltTools.Logging
 {
     public interface ITelemetryProvider
     {

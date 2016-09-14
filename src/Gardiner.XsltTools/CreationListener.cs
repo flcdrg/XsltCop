@@ -11,6 +11,7 @@ using EnvDTE;
 using Gardiner.XsltTools.Classification;
 using Gardiner.XsltTools.Commands;
 using Gardiner.XsltTools.ErrorList;
+using Gardiner.XsltTools.Logging;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Editor;

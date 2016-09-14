@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.HockeyApp;
 using Microsoft.HockeyApp.Model;
 
-namespace Gardiner.XsltTools
+namespace Gardiner.XsltTools.Logging
 {
     public sealed class HockeyClientTelemetryProvider : ITelemetryProvider
     {
@@ -25,7 +25,7 @@ namespace Gardiner.XsltTools
         {
             var provider = new HockeyClientTelemetryProvider(options);
 
-            await provider.Configure().ConfigureAwait(false);
+            await provider.Configure().ConfigureAwait(true);
 
             return provider;
         }
@@ -53,7 +53,7 @@ namespace Gardiner.XsltTools
                     Manufacturer = helper.Manufacturer,
                     Model = VsVersion.FullVersion.ToString(), // Visual Studio version
                     ProductID = helper.ProductID,
-                    Version = Assembly.GetExecutingAssembly().GetName().Version.ToString()
+                    Version = VsixManifest.GetManifest().Version
                 };
 
                 var field = typeof(HockeyClient).GetField("_crashLogInfo",
@@ -81,7 +81,7 @@ namespace Gardiner.XsltTools
                 _hockeyClient.TrackEvent(telemetry);
                 */
 
-                await _hockeyClient.SendCrashesAsync(true).ConfigureAwait(false);
+                await _hockeyClient.SendCrashesAsync(true).ConfigureAwait(true);
 
                 _hockeyClient.Flush();
             }
@@ -95,7 +95,7 @@ namespace Gardiner.XsltTools
         {
             if (propertyChangedEventArgs.PropertyName == nameof(Options.FeedbackAllowed))
             {
-                await Configure().ConfigureAwait(false);
+                await Configure().ConfigureAwait(true);
             }
         }
 
@@ -112,7 +112,12 @@ namespace Gardiner.XsltTools
         public void LogException(Exception ex)
         {
             // TrackException is not supported with WPF yet, so use HandleException instead
-            _hockeyClient?.HandleException(ex);
+            // Only report exceptions from our code
+            if (ex.ToString().Contains("Gardiner"))
+            {
+                _hockeyClient?.HandleException(ex);
+                Debug.WriteLine($"Logging exception {ex}");
+            }
         }
 
         public void Shutdown()
