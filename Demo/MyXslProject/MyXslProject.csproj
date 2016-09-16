@@ -51,6 +51,7 @@
     <Content Include="BadXml.xslt">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Missing.xslt" />
     <Content Include="Second.xslt" />
     <Content Include="First.xslt">
       <SubType>Designer</SubType>

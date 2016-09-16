@@ -110,6 +110,10 @@ namespace Gardiner.XsltTools
 
                     var checker = new XsltChecker();
                     var checkResult = checker.CheckFile(canonicalName);
+
+                    if (checkResult == null)
+                        return;
+                    
                     checkResult.Project = projectName;
 
                     ErrorListService.ProcessLintingResults(checkResult);
