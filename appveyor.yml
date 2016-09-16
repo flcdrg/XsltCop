@@ -10,11 +10,14 @@ before_build:
 
 build_script:
   - msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+  
+after_build:
+  - 7z a symbols.zip %APPVEYOR_BUILD_FOLDER%\src\Gardiner.XsltTools\obj\Release\*.pdb
 
 artifacts:
   - path: '**\*.vsix'
     name: VsixFile
-  - path: 'src\Gardiner.XsltTools\**\*.pdb'
+  - path: symbols.zip
     name: Symbols
     type: zip
     
