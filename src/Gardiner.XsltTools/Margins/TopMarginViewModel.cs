@@ -143,6 +143,7 @@ namespace Gardiner.XsltTools.Margins
 
             var snapshotPoint = new SnapshotPoint(_dataBuffer.CurrentSnapshot, key.Start);
             _textView.Caret.MoveTo(snapshotPoint);
+            _textView.Caret.EnsureVisible();
         }
     }
 }
