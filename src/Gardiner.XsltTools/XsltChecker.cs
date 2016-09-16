@@ -19,6 +19,9 @@ namespace Gardiner.XsltTools
             var violations = new List<Rule>();
 
             Debug.WriteLine(filename);
+            if (!File.Exists(filename))
+                return null;
+
             var text = File.ReadAllText(filename);
             try
             {

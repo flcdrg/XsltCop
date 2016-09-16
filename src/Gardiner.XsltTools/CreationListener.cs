@@ -68,9 +68,6 @@ namespace Gardiner.XsltTools
 
                 if (TextDocumentFactoryService.TryGetTextDocument(textView.TextDataModel.DocumentBuffer, out document))
                 {
-                    var fileName = Path.GetFileName(document.FilePath);
-                    Debug.WriteLine(fileName);
-
                     XsltClassifier classifier;
                     textView.TextDataModel.DocumentBuffer.Properties.TryGetProperty(typeof(XsltClassifier), out classifier);
 
@@ -82,8 +79,14 @@ namespace Gardiner.XsltTools
 
                     //TableDataSource.Instance.CleanAllErrors();
 
+                    var fileName = Path.GetFileName(document.FilePath);
+                    Debug.WriteLine(fileName);
+
                     var checker = new XsltChecker();
-                    var result = checker.CheckFile(document.FilePath);
+                    var result = checker.CheckFile(fileName);
+
+                    if (result == null)
+                        return;
 
                     var dte = (DTE) ServiceProvider.GetService(typeof(DTE));
 
