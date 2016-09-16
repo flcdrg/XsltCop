@@ -16,6 +16,7 @@ artifacts:
     name: VsixFile
   - path: 'src\Gardiner.XsltTools\**\*.pdb'
     name: Symbols
+    type: zip
     
 deploy:
   release: v$(GitVersion_FullSemVer)
