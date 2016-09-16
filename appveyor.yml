@@ -14,6 +14,8 @@ build_script:
 artifacts:
   - path: '**\*.vsix'
     name: VsixFile
+  - path: 'src\Gardiner.XsltTools\**\*.pdb'
+    name: Symbols
     
 deploy:
   release: v$(GitVersion_FullSemVer)
@@ -30,4 +32,4 @@ deploy:
     appveyor_repo_tag: true        # deploy on tag push only
 
 after_deploy:
-- ps: if ($env:GitVersion_BranchName -eq "master") { Vsix-PushArtifacts | Vsix-PublishToGallery }
+- ps: if ($env:GitVersion_BranchName -eq "master") { Vsix-PublishToGallery }
