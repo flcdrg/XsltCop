@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0E30C100-479F-4F28-8C77-292C53D28136}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gardiner.XsltTools", "src\Gardiner.XsltTools\Gardiner.XsltTools.csproj", "{0602540B-2EE9-4A21-8450-2901822C7B00}"
 	ProjectSection(ProjectDependencies) = postProject
 		{29058452-9804-4204-93EF-BD55CE1ED0FA} = {29058452-9804-4204-93EF-BD55CE1ED0FA}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gardiner.XsltTools.Tests", "src\Gardiner.XsltTools.Tests\Gardiner.XsltTools.Tests.csproj", "{F489DCFC-9576-4BCA-B246-79802728595A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0E30C100-479F-4F28-8C77-292C53D28136}"
-	ProjectSection(SolutionItems) = preProject
-		CHANGELOG.md = CHANGELOG.md
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gardiner.XsltTools.Weavers", "src\Gardiner.XsltTools.Weavers\Gardiner.XsltTools.Weavers.csproj", "{29058452-9804-4204-93EF-BD55CE1ED0FA}"
 EndProject
