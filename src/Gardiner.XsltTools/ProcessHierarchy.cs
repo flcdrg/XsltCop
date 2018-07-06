@@ -92,7 +92,7 @@ namespace Gardiner.XsltTools
             return VSConstants.VSITEMID_NIL;
         }
 
-        private void ShowNodeName(IVsHierarchy hierarchy, uint itemId, string projectName)
+        private static void ShowNodeName(IVsHierarchy hierarchy, uint itemId, string projectName)
         {
             Guid guid;
             var result = hierarchy.GetGuidProperty(itemId, (int)__VSHPROPID.VSHPROPID_TypeGuid, out guid);

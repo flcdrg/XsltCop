@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.TableControl;
@@ -41,11 +43,13 @@ namespace Gardiner.XsltTools.ErrorList
             get { return _instance ?? (_instance = new TableDataSource()); }
         }
 
-
+#pragma warning disable CA1822
+        [UsedImplicitly]
         public bool HasErrors
         {
             get { return _snapshots.Any(); }
         }
+#pragma warning restore CA1822
 
         public void AddSinkManager(SinkManager manager)
         {
