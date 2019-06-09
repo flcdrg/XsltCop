@@ -16,12 +16,17 @@ namespace Gardiner.XsltTools.Logging
 
         public static void Initialise([NotNull] ITelemetryProvider provider, [NotNull] DTE2 dte)
         {
+            if (provider == null)
+            {
+                throw new ArgumentNullException(nameof(provider));
+            }
+
             if (dte == null)
             {
                 throw new ArgumentNullException(nameof(dte));
             }
 
-            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            _provider = provider;
             _events = dte.Events.DTEEvents;
 
             _events.OnBeginShutdown += Shutdown;

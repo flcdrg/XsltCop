@@ -29,7 +29,12 @@ namespace Gardiner.XsltTools.Margins
 
         public TopMarginViewModel([NotNull] IWpfTextView textView)
         {
-            _textView = textView ?? throw new ArgumentNullException(nameof(textView));
+            if (textView == null)
+            {
+                throw new ArgumentNullException(nameof(textView));
+            }
+
+            _textView = textView;
             _dataBuffer = textView.TextDataModel.DataBuffer;
 
             UpdateList();
