@@ -13,7 +13,7 @@ using PropertyChanged;
 
 namespace Gardiner.XsltTools.Margins
 {
-    [ImplementPropertyChanged]
+    [AddINotifyPropertyChangedInterface]
     public class TopMarginViewModel
     {
         private readonly IWpfTextView _textView;

@@ -17,12 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gardiner.XsltTools.Weavers", "src\Gardiner.XsltTools.Weavers\Gardiner.XsltTools.Weavers.csproj", "{29058452-9804-4204-93EF-BD55CE1ED0FA}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Gardiner.XsltTools.Shared", "Gardiner.XsltTools.Shared\Gardiner.XsltTools.Shared.shproj", "{D0744359-8024-4C0B-994C-DE8AB1A185E9}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Gardiner.XsltTools.Shared", "src\Gardiner.XsltTools.Shared\Gardiner.XsltTools.Shared.shproj", "{D0744359-8024-4C0B-994C-DE8AB1A185E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2019", "src\VS2019\VS2019.csproj", "{810B2003-64F3-4EBB-B86E-66F336097579}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Gardiner.XsltTools.Shared\Gardiner.XsltTools.Shared.projitems*{0602540b-2ee9-4a21-8450-2901822c7b00}*SharedItemsImports = 4
-		Gardiner.XsltTools.Shared\Gardiner.XsltTools.Shared.projitems*{d0744359-8024-4c0b-994c-de8ab1a185e9}*SharedItemsImports = 13
+		src\Gardiner.XsltTools.Shared\Gardiner.XsltTools.Shared.projitems*{0602540b-2ee9-4a21-8450-2901822c7b00}*SharedItemsImports = 4
+		src\Gardiner.XsltTools.Shared\Gardiner.XsltTools.Shared.projitems*{810b2003-64f3-4ebb-b86e-66f336097579}*SharedItemsImports = 4
+		src\Gardiner.XsltTools.Shared\Gardiner.XsltTools.Shared.projitems*{d0744359-8024-4c0b-994c-de8ab1a185e9}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +44,10 @@ Global
 		{29058452-9804-4204-93EF-BD55CE1ED0FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29058452-9804-4204-93EF-BD55CE1ED0FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29058452-9804-4204-93EF-BD55CE1ED0FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{810B2003-64F3-4EBB-B86E-66F336097579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{810B2003-64F3-4EBB-B86E-66F336097579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{810B2003-64F3-4EBB-B86E-66F336097579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{810B2003-64F3-4EBB-B86E-66F336097579}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

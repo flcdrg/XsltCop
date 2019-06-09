@@ -4,15 +4,17 @@ using System.Globalization;
 using System.Windows.Threading;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace XsltEditor.Commands
 {
     // Mads
     internal abstract class CommandTargetBase<TCommandEnum> : IOleCommandTarget where TCommandEnum : struct, IComparable
     {
-        private IOleCommandTarget _nextCommandTarget;
+        private readonly IOleCommandTarget _nextCommandTarget;
         protected readonly IWpfTextView TextView;
 
         public Guid CommandGroup { get; set; }
@@ -27,11 +29,14 @@ namespace XsltEditor.Commands
             CommandIds = new ReadOnlyCollection<uint>(commandIds);
             TextView = textView;
 
-            Dispatcher.CurrentDispatcher.InvokeAsync(() =>
-            {
-                // Add the target later to make sure it makes it in before other command handlers
-                ErrorHandler.ThrowOnFailure(adapter.AddCommandFilter(this, out _nextCommandTarget));
-            }, DispatcherPriority.ApplicationIdle);
+            // await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            // Add the target later to make sure it makes it in before other command handlers
+            ErrorHandler.ThrowOnFailure(adapter.AddCommandFilter(this, out _nextCommandTarget));
+
+            //Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+            //{
+            //}, DispatcherPriority.ApplicationIdle);
         }
 
         protected abstract bool IsEnabled();
@@ -49,11 +54,14 @@ namespace XsltEditor.Commands
                 }
             }
 
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _nextCommandTarget.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (pguidCmdGroup != CommandGroup)
             {
                 return _nextCommandTarget.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);

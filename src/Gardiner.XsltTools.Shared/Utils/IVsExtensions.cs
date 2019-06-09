@@ -3,6 +3,7 @@ using System;
 using JetBrains.Annotations;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -18,6 +19,8 @@ namespace Gardiner.XsltTools.Utils
             {
                 throw new ArgumentNullException(nameof(buffer));
             }
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             // TextBufferExtensions.GetFileName uses ITextDocument; I don't know if
             // it's possible for a buffer (eg, from a native editor) to not have it

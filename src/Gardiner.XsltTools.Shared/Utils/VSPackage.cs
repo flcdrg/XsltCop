@@ -12,7 +12,9 @@ namespace Gardiner.XsltTools.Utils
     {
         private static DTE2 _dte;
 
+#pragma warning disable VSTHRD010
         internal static DTE2 DTE => _dte ?? (_dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2);
+#pragma warning restore VSTHRD010
 
         public static T GetGlobalService<T>(Type type = null) where T : class
         {

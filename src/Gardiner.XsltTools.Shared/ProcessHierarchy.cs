@@ -8,6 +8,7 @@ using Gardiner.XsltTools.ErrorList;
 using JetBrains.Annotations;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Gardiner.XsltTools
@@ -21,6 +22,8 @@ namespace Gardiner.XsltTools
                 throw new ArgumentNullException(nameof(hierarchy));
             }
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Traverse the nodes of the hierarchy from the root node
             ProcessHierarchyNodeRecursively(hierarchy, VSConstants.VSITEMID_ROOT, projectName);
         }
@@ -29,6 +32,8 @@ namespace Gardiner.XsltTools
         {
             IntPtr nestedHierarchyValue;
             uint nestedItemIdValue;
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             // First, guess if the node is actually the root of another hierarchy (a project, for example)
             var nestedHierarchyGuid = typeof(IVsHierarchy).GUID;
@@ -113,6 +118,8 @@ namespace Gardiner.XsltTools
 
         private static void ShowNodeName(IVsHierarchy hierarchy, uint itemId, string projectName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Guid guid;
             var result = hierarchy.GetGuidProperty(itemId, (int)__VSHPROPID.VSHPROPID_TypeGuid, out guid);
 

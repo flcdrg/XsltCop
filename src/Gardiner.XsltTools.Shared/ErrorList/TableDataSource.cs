@@ -23,7 +23,14 @@ namespace Gardiner.XsltTools.ErrorList
 
         private TableDataSource()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var compositionService = (IComponentModel) ServiceProvider.GlobalProvider.GetService(typeof(SComponentModel));
+            if (compositionService == null)
+            {
+                throw new ArgumentNullException(nameof(compositionService));
+            }
+
             compositionService.DefaultCompositionService.SatisfyImportsOnce(this);
 
             var manager = TableManagerProvider.GetTableManager(StandardTables.ErrorsTable);

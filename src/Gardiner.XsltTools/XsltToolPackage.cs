@@ -112,10 +112,10 @@ namespace Gardiner.XsltTools
 #endif
             }
 #pragma warning disable CA1031 // Do not catch general exception types
-            catch (Exception ex)
+            catch
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                Telemetry.Log(ex);
+                // Telemetry.Log(ex);
             }
             return VSConstants.S_OK;
         }
@@ -124,11 +124,6 @@ namespace Gardiner.XsltTools
         {
             _dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
             Options = (Options)GetDialogPage(typeof(Options));
-
-#pragma warning disable CA2000 // Dispose objects before losing scope
-            var provider = await HockeyClientTelemetryProvider.Create(Options).ConfigureAwait(true);
-#pragma warning restore CA2000 // Dispose objects before losing scope
-            Telemetry.Initialise(provider, _dte);
 
             Logger.Initialize(this, Vsix.Name);
 

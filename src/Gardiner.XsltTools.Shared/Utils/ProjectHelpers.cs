@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 using EnvDTE;
 
+using Microsoft.VisualStudio.Shell;
+
 namespace Gardiner.XsltTools.Utils
 {
     // mads
@@ -12,6 +14,8 @@ namespace Gardiner.XsltTools.Utils
         ///<summary>Gets the base directory of a specific Project, or of the active project if no parameter is passed.</summary>
         public static string GetRootFolder(Project project = null)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 project = project ?? GetActiveProject();
@@ -79,6 +83,8 @@ namespace Gardiner.XsltTools.Utils
         ///<summary>Gets the currently active project (as reported by the Solution Explorer), if any.</summary>
         public static Project GetActiveProject()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 Array activeSolutionProjects = VSPackage.DTE.ActiveSolutionProjects as Array;
@@ -102,6 +108,8 @@ namespace Gardiner.XsltTools.Utils
         ///<summary>Gets the directory containing the project for the specified file.</summary>
         private static string GetProjectFolder(ProjectItem item)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (item == null || item.ContainingProject == null || item.ContainingProject.Collection == null || string.IsNullOrEmpty(item.ContainingProject.FullName)) // Solution items
             {
                 return null;
@@ -113,6 +121,8 @@ namespace Gardiner.XsltTools.Utils
         ///<summary>Gets the directory containing the project for the specified file.</summary>
         public static string GetProjectFolder(string fileNameOrFolder)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (string.IsNullOrEmpty(fileNameOrFolder))
             {
                 return GetRootFolder();
@@ -131,6 +141,8 @@ namespace Gardiner.XsltTools.Utils
 
         internal static ProjectItem GetProjectItem(string fileName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 return VSPackage.DTE.Solution.FindProjectItem(fileName);
@@ -147,6 +159,8 @@ namespace Gardiner.XsltTools.Utils
 
         public static ProjectItem AddFileToProject(string parentFileName, string fileName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (Path.GetFullPath(parentFileName) == Path.GetFullPath(fileName) || !File.Exists(fileName))
             {
                 return null;

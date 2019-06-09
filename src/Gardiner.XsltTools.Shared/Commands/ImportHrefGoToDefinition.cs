@@ -7,6 +7,7 @@ using Gardiner.XsltTools.Classification;
 using Gardiner.XsltTools.Utils;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 
@@ -51,6 +52,8 @@ namespace Gardiner.XsltTools.Commands
             }
             catch (IOException e)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 VSPackage.DTE.StatusBar.Text = $"Could not find file: \"{referencedPath}\", Error: {e.Message}";
 
                 return false;

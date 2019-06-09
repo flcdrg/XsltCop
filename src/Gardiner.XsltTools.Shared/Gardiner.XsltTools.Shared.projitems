@@ -23,10 +23,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ErrorList\TableDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorList\TableEntriesSnapshot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileAndContentTypeDefinitions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Logging\HockeyClientTelemetryProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\ITelemetryProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Logger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Logging\Telemetry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\VsixManifest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Margins\LogExceptionsAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Margins\TemplateModel.cs" />

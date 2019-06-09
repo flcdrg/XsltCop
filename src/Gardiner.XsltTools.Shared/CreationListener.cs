@@ -45,6 +45,8 @@ namespace Gardiner.XsltTools
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 IWpfTextView textView = EditorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
@@ -81,6 +83,10 @@ namespace Gardiner.XsltTools
                     }
 
                     var dte = (DTE) ServiceProvider.GetService(typeof(DTE));
+                    if (dte == null)
+                    {
+                        throw new ArgumentNullException(nameof(dte));
+                    }
 
                     var projectItem = dte.Solution.FindProjectItem(fileName);
 
@@ -98,10 +104,10 @@ namespace Gardiner.XsltTools
                 }
             }
 #pragma warning disable CA1031 // Do not catch general exception types
-            catch (Exception ex)
+            catch
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                Telemetry.Log(ex);
+                // Telemetry.Log(ex);
             }
         }
     }

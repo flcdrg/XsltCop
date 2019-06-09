@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Gardiner.XsltTools.Logging
@@ -30,6 +31,8 @@ namespace Gardiner.XsltTools.Logging
 
             try
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (EnsurePane())
                 {
                     _pane.OutputString(DateTime.Now + ": " + message + Environment.NewLine);
@@ -45,6 +48,8 @@ namespace Gardiner.XsltTools.Logging
 
         public static void Log(Exception ex)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (ex != null)
             {
                 Log(ex.ToString());
@@ -53,12 +58,17 @@ namespace Gardiner.XsltTools.Logging
 
         private static bool EnsurePane()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_pane == null)
             {
                 Guid guid = Guid.NewGuid();
                 var output = (IVsOutputWindow)_provider.GetService(typeof(SVsOutputWindow));
-                output.CreatePane(ref guid, _name, 1, 1);
-                output.GetPane(ref guid, out _pane);
+                if (output != null)
+                {
+                    output.CreatePane(ref guid, _name, 1, 1);
+                    output.GetPane(ref guid, out _pane);
+                }
             }
 
             return _pane != null;

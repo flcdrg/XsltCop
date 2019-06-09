@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Gardiner.XsltTools.Utils
@@ -11,6 +12,7 @@ namespace Gardiner.XsltTools.Utils
         public static void OpenFileInPreviewTab(string file)
         {
             IVsNewDocumentStateContext newDocumentStateContext = null;
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             try
             {
