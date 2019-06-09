@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d0744359-8024-4c0b-994c-de8ab1a185e9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Gardiner.XsltTools.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Classification\ClassificationTypeDefinitions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classification\ClassificationTypeNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classification\XsltClassifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classification\XsltClassifierProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandTargetBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\ImportHrefGoToDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CreationListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorList\AccessibilityResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorList\ErrorListService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorList\Rule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorList\SinkManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorList\TableDataSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorList\TableEntriesSnapshot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileAndContentTypeDefinitions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\HockeyClientTelemetryProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\ITelemetryProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\Logger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\Telemetry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\VsixManifest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Options.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ProcessHierarchy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\FileHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IVsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\ProjectHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\VSPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)XPathTreeBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)XsltChecker.cs" />
+  </ItemGroup>
+</Project>
