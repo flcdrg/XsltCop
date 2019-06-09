@@ -11,10 +11,13 @@ using Microsoft.HockeyApp.Model;
 
 namespace Gardiner.XsltTools.Logging
 {
-    public sealed class HockeyClientTelemetryProvider : ITelemetryProvider
+    public sealed class HockeyClientTelemetryProvider : ITelemetryProvider, IDisposable
     {
         private HockeyClient _hockeyClient;
+
+#pragma warning disable CA2213
         private readonly Options _options;
+#pragma warning restore CA2213
 
         private HockeyClientTelemetryProvider(Options options)
         {
@@ -136,6 +139,11 @@ namespace Gardiner.XsltTools.Logging
         {
             _hockeyClient?.Flush();
             Debug.WriteLine("Flushing telemetry");
+        }
+
+        public void Dispose()
+        {
+            _options?.Dispose();
         }
     }
 }
