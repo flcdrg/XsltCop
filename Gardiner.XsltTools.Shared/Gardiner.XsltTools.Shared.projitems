@@ -37,11 +37,20 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ProcessHierarchy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TopMarginUserControl.xaml.cs">
+      <DependentUpon>TopMarginUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Utils\FileHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IVsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ProjectHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\VSPackage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)XPathTreeBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)XsltChecker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)TopMarginUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>
