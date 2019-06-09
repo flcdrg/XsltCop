@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 using Microsoft.Language.Xml;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -25,8 +27,13 @@ namespace Gardiner.XsltTools.Margins
         {
         }
 
-        public TopMarginViewModel(IWpfTextView textView)
+        public TopMarginViewModel([NotNull] IWpfTextView textView)
         {
+            if (textView == null)
+            {
+                throw new ArgumentNullException(nameof(textView));
+            }
+
             _textView = textView;
             _dataBuffer = textView.TextDataModel.DataBuffer;
 
@@ -42,7 +49,9 @@ namespace Gardiner.XsltTools.Margins
             set
             {
                 if (Equals(value, _selectedValue))
+                {
                     return;
+                }
 
                 Debug.WriteLine($"SelectedValue {value}");
                 _selectedValue = value;
@@ -105,8 +114,13 @@ namespace Gardiner.XsltTools.Margins
             _dontUpdateCaret = false;
         }
 
-        public static IEnumerable<SyntaxNode> GetDescendants(SyntaxNode node)
+        public static IEnumerable<SyntaxNode> GetDescendants([NotNull] SyntaxNode node)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             var result = new List<SyntaxNode>();
             AddDescendants(node, result);
             return result;
@@ -134,12 +148,16 @@ namespace Gardiner.XsltTools.Margins
             return item;
         }
 
+#pragma warning disable CA2227 // Collection properties should be read only
         public IList<TemplateModel> Templates { get; set; }
+#pragma warning restore CA2227 // Collection properties should be read only
 
         public void TemplateListSelectionChanged(TemplateModel key)
         {
             if (_dontUpdateCaret || key == null)
+            {
                 return;
+            }
 
             var snapshotPoint = new SnapshotPoint(_dataBuffer.CurrentSnapshot, key.Start);
             _textView.Caret.MoveTo(snapshotPoint);

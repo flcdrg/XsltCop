@@ -15,6 +15,8 @@ using Gardiner.XsltTools.ErrorList;
 using Gardiner.XsltTools.Logging;
 using Gardiner.XsltTools.Properties;
 
+using JetBrains.Annotations;
+
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -73,9 +75,24 @@ namespace Gardiner.XsltTools
         }
 
 
-        public int UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction,
+        public int UpdateProjectCfg_Begin([NotNull] IVsHierarchy pHierProj, [NotNull] IVsCfg pCfgProj, [NotNull] IVsCfg pCfgSln, uint dwAction,
             ref int pfCancel)
         {
+            if (pHierProj == null)
+            {
+                throw new ArgumentNullException(nameof(pHierProj));
+            }
+
+            if (pCfgProj == null)
+            {
+                throw new ArgumentNullException(nameof(pCfgProj));
+            }
+
+            if (pCfgSln == null)
+            {
+                throw new ArgumentNullException(nameof(pCfgSln));
+            }
+
             try
             {
                 object o;
@@ -94,7 +111,9 @@ namespace Gardiner.XsltTools
 
 #endif
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 Telemetry.Log(ex);
             }
@@ -106,7 +125,9 @@ namespace Gardiner.XsltTools
             _dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
             Options = (Options)GetDialogPage(typeof(Options));
 
+#pragma warning disable CA2000 // Dispose objects before losing scope
             var provider = await HockeyClientTelemetryProvider.Create(Options).ConfigureAwait(true);
+#pragma warning restore CA2000 // Dispose objects before losing scope
             Telemetry.Initialise(provider, _dte);
 
             Logger.Initialize(this, Vsix.Name);
@@ -136,7 +157,9 @@ namespace Gardiner.XsltTools
                 var userHasBeenPrompted = bool.Parse(UserRegistryRoot.GetValue(permissionKey, false).ToString());
 
                 if (userHasBeenPrompted)
+                {
                     return;
+                }
 
                 var hwnd = new IntPtr(_dte.MainWindow.HWnd);
                 var window = (System.Windows.Window)HwndSource.FromHwnd(hwnd)?.RootVisual;
@@ -146,10 +169,14 @@ namespace Gardiner.XsltTools
                     var answer = MessageBox.Show(window, Resources.PermissionPrompt, string.Format(CultureInfo.CurrentCulture, Resources.PermissionPromptCaption, Vsix.Name), MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                     if (answer == MessageBoxResult.Yes)
+                    {
                         Options.FeedbackAllowed = true;
+                    }
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 Logger.Log(ex);
             }

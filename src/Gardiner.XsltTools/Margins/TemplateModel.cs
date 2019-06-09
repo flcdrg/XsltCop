@@ -9,7 +9,7 @@ namespace Gardiner.XsltTools.Margins
         public string Match { get; set; }
         public int Start { get; set; }
 
-        protected bool Equals(TemplateModel other)
+        private bool Equals(TemplateModel other)
         {
             return string.Equals(Name, other.Name, StringComparison.InvariantCulture) && string.Equals(Mode, other.Mode, StringComparison.InvariantCulture) && string.Equals(Match, other.Match, StringComparison.InvariantCulture);
         }
@@ -17,11 +17,20 @@ namespace Gardiner.XsltTools.Margins
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
+            {
                 return false;
+            }
+
             if (ReferenceEquals(this, obj))
+            {
                 return true;
+            }
+
             if (obj.GetType() != this.GetType())
+            {
                 return false;
+            }
+
             return Equals((TemplateModel) obj);
         }
 

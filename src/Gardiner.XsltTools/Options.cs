@@ -19,7 +19,9 @@ namespace Gardiner.XsltTools
             set
             {
                 if (value == _feedbackAllowed)
+                {
                     return;
+                }
 
                 _feedbackAllowed = value;
                 OnPropertyChanged();

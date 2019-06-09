@@ -57,7 +57,9 @@ namespace Gardiner.XsltTools.Tests
                         .FirstOrDefault(a => a.Name == "mode");
 
                     if (mode != null)
+                    {
                         Debug.WriteLine(mode.Value);
+                    }
                 }
             }
 

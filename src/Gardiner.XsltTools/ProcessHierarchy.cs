@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 
 using Gardiner.XsltTools.ErrorList;
 
+using JetBrains.Annotations;
+
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -12,8 +14,13 @@ namespace Gardiner.XsltTools
 {
     public class ProcessHierarchy
     {
-        public void Process(IVsHierarchy hierarchy, string projectName)
+        public void Process([NotNull] IVsHierarchy hierarchy, string projectName)
         {
+            if (hierarchy == null)
+            {
+                throw new ArgumentNullException(nameof(hierarchy));
+            }
+
             // Traverse the nodes of the hierarchy from the root node
             ProcessHierarchyNodeRecursively(hierarchy, VSConstants.VSITEMID_ROOT, projectName);
         }
@@ -72,27 +79,39 @@ namespace Gardiner.XsltTools
 
         {
             if (pvar == null)
+            {
                 return VSConstants.VSITEMID_NIL;
+            }
 
             if (pvar is int)
+            {
                 return (uint) (int) pvar;
+            }
 
             if (pvar is uint)
+            {
                 return (uint) pvar;
+            }
 
             if (pvar is short)
+            {
                 return (uint) (short) pvar;
+            }
 
             if (pvar is ushort)
+            {
                 return (ushort) pvar;
+            }
 
             if (pvar is long)
+            {
                 return (uint) (long) pvar;
+            }
 
             return VSConstants.VSITEMID_NIL;
         }
 
-        private void ShowNodeName(IVsHierarchy hierarchy, uint itemId, string projectName)
+        private static void ShowNodeName(IVsHierarchy hierarchy, uint itemId, string projectName)
         {
             Guid guid;
             var result = hierarchy.GetGuidProperty(itemId, (int)__VSHPROPID.VSHPROPID_TypeGuid, out guid);
@@ -112,8 +131,10 @@ namespace Gardiner.XsltTools
                     var checkResult = checker.CheckFile(canonicalName);
 
                     if (checkResult == null)
+                    {
                         return;
-                    
+                    }
+
                     checkResult.Project = projectName;
 
                     ErrorListService.ProcessLintingResults(checkResult);

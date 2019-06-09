@@ -39,7 +39,9 @@ namespace Gardiner.XsltTools
                             _vsVersion = new Version(verName);
                         }
                         else
+                        {
                             _vsVersion = new Version(0, 0); // Not running inside Visual Studio!
+                        }
                     }
                 }
 

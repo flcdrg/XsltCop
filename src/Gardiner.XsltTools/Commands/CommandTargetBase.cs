@@ -55,7 +55,9 @@ namespace XsltEditor.Commands
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
             if (pguidCmdGroup != CommandGroup)
+            {
                 return _nextCommandTarget.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+            }
 
             for (int i = 0; i < cCmds; i++)
             {

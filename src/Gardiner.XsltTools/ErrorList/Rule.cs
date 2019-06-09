@@ -61,7 +61,9 @@ namespace Gardiner.XsltTools.ErrorList
         private void SetLineAndColumn()
         {
             if (Line != 0 || Column != 0 || Position == -1 || string.IsNullOrEmpty(FileName))
+            {
                 return;
+            }
 
             var lineCount = 0;
             var columnCount = 0;
@@ -99,7 +101,9 @@ namespace Gardiner.XsltTools.ErrorList
             var cast = obj as Rule;
 
             if (cast == null)
+            {
                 return false;
+            }
 
             var thisHash = GetHashCode();
             var objHash = cast.GetHashCode();
