@@ -116,7 +116,6 @@
       <Link>Resources\LICENSE</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="app.config" />
     <None Include="Gardiner.XsltTools.ruleset" />
     <None Include="Key.snk" />
     <None Include="packages.config" />
