@@ -60,11 +60,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Margins\LogExceptionsAttribute.cs" />
-    <Compile Include="Margins\TemplateModel.cs" />
-    <Compile Include="Margins\TopMarginViewModel.cs" />
-    <Compile Include="Margins\TopMargin.cs" />
-    <Compile Include="Margins\TopMarginFactory.cs" />
     <Compile Include="Margins\TopMarginUserControl.xaml.cs">
       <DependentUpon>TopMarginUserControl.xaml</DependentUpon>
     </Compile>
