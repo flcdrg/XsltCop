@@ -25,7 +25,9 @@ namespace Gardiner.XsltTools.Commands
         {
             var path = FindReferencedPath();
             if (path == null)
+            {
                 return false;
+            }
 
             Uri uri;
             if (!Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uri))
@@ -35,7 +37,9 @@ namespace Gardiner.XsltTools.Commands
 
             // ignore non-files
             if (uri.IsAbsoluteUri && uri.Scheme != Uri.UriSchemeFile)
+            {
                 return false;
+            }
 
             var referencedPath = Path.Combine(Path.GetDirectoryName(TextView.TextBuffer.GetFileName()), path);
 
@@ -45,7 +49,7 @@ namespace Gardiner.XsltTools.Commands
             {
                 file = Path.GetFullPath(referencedPath);
             }
-            catch (Exception e)
+            catch (IOException e)
             {
                 VSPackage.DTE.StatusBar.Text = $"Could not find file: \"{referencedPath}\", Error: {e.Message}";
 

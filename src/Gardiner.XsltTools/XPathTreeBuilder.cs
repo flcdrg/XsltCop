@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
 using CodePlex.XPathParser;
+
+using JetBrains.Annotations;
 
 namespace Gardiner.XsltTools
 {
@@ -73,8 +76,13 @@ namespace Gardiner.XsltTools
                 );
         }
 
-        public XElement Function(string prefix, string name, IList<XElement> args)
+        public XElement Function(string prefix, string name, [NotNull] IList<XElement> args)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var xe = new XElement("function",
                 new XAttribute("prefix", prefix ?? "(null)"),
                 new XAttribute("name", name ?? "(null)")

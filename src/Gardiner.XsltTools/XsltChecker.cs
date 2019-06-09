@@ -20,7 +20,9 @@ namespace Gardiner.XsltTools
 
             Debug.WriteLine(filename);
             if (!File.Exists(filename))
+            {
                 return null;
+            }
 
             var text = File.ReadAllText(filename);
             try

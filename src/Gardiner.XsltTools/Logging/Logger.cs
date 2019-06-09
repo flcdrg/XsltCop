@@ -24,7 +24,9 @@ namespace Gardiner.XsltTools.Logging
         public static void Log(string message)
         {
             if (string.IsNullOrEmpty(message))
+            {
                 return;
+            }
 
             try
             {
@@ -33,7 +35,9 @@ namespace Gardiner.XsltTools.Logging
                     _pane.OutputString(DateTime.Now + ": " + message + Environment.NewLine);
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 System.Diagnostics.Debug.Write(ex);
             }

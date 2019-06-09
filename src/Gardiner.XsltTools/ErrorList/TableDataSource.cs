@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.TableControl;
@@ -41,8 +43,10 @@ namespace Gardiner.XsltTools.ErrorList
             get { return _instance ?? (_instance = new TableDataSource()); }
         }
 
-
+#pragma warning disable CA1822
+        [UsedImplicitly]
         public bool HasErrors
+#pragma warning restore CA1822
         {
             get { return _snapshots.Any(); }
         }
@@ -81,7 +85,9 @@ namespace Gardiner.XsltTools.ErrorList
         public void AddErrors(AccessibilityResult result)
         {
             if (result == null || !result.Violations.Any())
+            {
                 return;
+            }
 
             result.Violations = result.Violations.Where(v => !_snapshots.Any(s => s.Value.Errors.Contains(v)));
 

@@ -4,6 +4,8 @@ using EnvDTE;
 
 using EnvDTE80;
 
+using JetBrains.Annotations;
+
 namespace Gardiner.XsltTools.Logging
 {
     #pragma warning disable CA1724 // Type Names Should Not Match Namespaces
@@ -12,9 +14,14 @@ namespace Gardiner.XsltTools.Logging
         private static ITelemetryProvider _provider;
         private static DTEEvents _events;
 
-        public static void Initialise(ITelemetryProvider provider, DTE2 dte)
+        public static void Initialise([NotNull] ITelemetryProvider provider, [NotNull] DTE2 dte)
         {
-            _provider = provider;
+            if (dte == null)
+            {
+                throw new ArgumentNullException(nameof(dte));
+            }
+
+            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _events = dte.Events.DTEEvents;
 
             _events.OnBeginShutdown += Shutdown;

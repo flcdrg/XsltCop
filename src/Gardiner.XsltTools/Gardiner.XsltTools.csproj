@@ -1,17 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Text.Analyzers.2.6.4\build\Text.Analyzers.props" Condition="Exists('..\..\packages\Text.Analyzers.2.6.4\build\Text.Analyzers.props')" />
+  <Import Project="..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
+  <Import Project="..\..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props')" />
+  <Import Project="..\..\packages\Microsoft.NetCore.Analyzers.2.9.3\build\Microsoft.NetCore.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.NetCore.Analyzers.2.9.3\build\Microsoft.NetCore.Analyzers.props')" />
+  <Import Project="..\..\packages\Microsoft.CodeQuality.Analyzers.2.9.3\build\Microsoft.CodeQuality.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.CodeQuality.Analyzers.2.9.3\build\Microsoft.CodeQuality.Analyzers.props')" />
+  <Import Project="..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.3\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props" Condition="Exists('..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.3\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" />
   <Import Project="..\..\packages\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.14.0.23-pre\build\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.props" Condition="Exists('..\..\packages\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.14.0.23-pre\build\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.props')" />
   <Import Project="..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.props')" />
-  <Import Project="..\..\packages\Text.Analyzers.1.2.0-beta2\build\Text.Analyzers.props" Condition="Exists('..\..\packages\Text.Analyzers.1.2.0-beta2\build\Text.Analyzers.props')" />
-  <Import Project="..\..\packages\System.Threading.Tasks.Analyzers.1.2.0-beta2\build\System.Threading.Tasks.Analyzers.props" Condition="Exists('..\..\packages\System.Threading.Tasks.Analyzers.1.2.0-beta2\build\System.Threading.Tasks.Analyzers.props')" />
-  <Import Project="..\..\packages\System.Runtime.InteropServices.Analyzers.1.2.0-beta2\build\System.Runtime.InteropServices.Analyzers.props" Condition="Exists('..\..\packages\System.Runtime.InteropServices.Analyzers.1.2.0-beta2\build\System.Runtime.InteropServices.Analyzers.props')" />
-  <Import Project="..\..\packages\System.Runtime.Analyzers.1.2.0-beta2\build\System.Runtime.Analyzers.props" Condition="Exists('..\..\packages\System.Runtime.Analyzers.1.2.0-beta2\build\System.Runtime.Analyzers.props')" />
-  <Import Project="..\..\packages\System.Resources.Analyzers.1.2.0-beta2\build\System.Resources.Analyzers.props" Condition="Exists('..\..\packages\System.Resources.Analyzers.1.2.0-beta2\build\System.Resources.Analyzers.props')" />
-  <Import Project="..\..\packages\System.Collections.Immutable.Analyzers.1.2.0-beta2\build\System.Collections.Immutable.Analyzers.props" Condition="Exists('..\..\packages\System.Collections.Immutable.Analyzers.1.2.0-beta2\build\System.Collections.Immutable.Analyzers.props')" />
-  <Import Project="..\..\packages\Microsoft.QualityGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.QualityGuidelines.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.QualityGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.QualityGuidelines.Analyzers.props')" />
-  <Import Project="..\..\packages\Microsoft.Maintainability.Analyzers.1.2.0-beta2\build\Microsoft.Maintainability.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.Maintainability.Analyzers.1.2.0-beta2\build\Microsoft.Maintainability.Analyzers.props')" />
-  <Import Project="..\..\packages\Microsoft.ApiDesignGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.ApiDesignGuidelines.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.ApiDesignGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.ApiDesignGuidelines.Analyzers.props')" />
-  <Import Project="..\..\packages\Desktop.Analyzers.1.2.0-beta2\build\Desktop.Analyzers.props" Condition="Exists('..\..\packages\Desktop.Analyzers.1.2.0-beta2\build\Desktop.Analyzers.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -124,6 +120,7 @@
       <Link>Resources\LICENSE</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="app.config" />
     <None Include="Gardiner.XsltTools.ruleset" />
     <None Include="Key.snk" />
     <None Include="packages.config" />
@@ -181,9 +178,8 @@
       <HintPath>..\..\packages\HockeySDK.WPF.4.1.6\lib\net45\Microsoft.HockeyApp.Kit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Language.Xml, Version=0.0.0.0, Culture=neutral, PublicKeyToken=d8943316a876e00f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Language.Xml.1.0.15\lib\net45\Microsoft.Language.Xml.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Language.Xml, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d8943316a876e00f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Language.Xml.1.1.20\lib\netstandard1.3\Microsoft.Language.Xml.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -308,6 +304,9 @@
       <HintPath>..\..\libs\Microsoft.Web.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PropertyChanged, Version=1.52.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
@@ -319,15 +318,65 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Net.Http.4.3.0\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="XPathParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dda719bb3a0d722d, processorArchitecture=MSIL">
       <HintPath>..\..\packages\XPathParser.1.1.0-r9\lib\net45\XPathParser.dll</HintPath>
@@ -348,29 +397,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\Desktop.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Analyzer.Utilities.dll" />
-    <Analyzer Include="..\..\packages\Desktop.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Desktop.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Desktop.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Desktop.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.ApiDesignGuidelines.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Microsoft.ApiDesignGuidelines.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.ApiDesignGuidelines.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Microsoft.ApiDesignGuidelines.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.Maintainability.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Microsoft.Maintainability.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.Maintainability.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Microsoft.Maintainability.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.QualityGuidelines.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Microsoft.QualityGuidelines.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.QualityGuidelines.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Microsoft.QualityGuidelines.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Collections.Immutable.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Collections.Immutable.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Collections.Immutable.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Collections.Immutable.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Resources.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Resources.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Resources.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Resources.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Runtime.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Runtime.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Runtime.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Runtime.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Runtime.InteropServices.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Runtime.InteropServices.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Runtime.InteropServices.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Runtime.InteropServices.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Security.Cryptography.Hashing.Algorithms.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Security.Cryptography.Hashing.Algorithms.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Security.Cryptography.Hashing.Algorithms.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Security.Cryptography.Hashing.Algorithms.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Threading.Tasks.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Threading.Tasks.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\System.Threading.Tasks.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\System.Threading.Tasks.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Text.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Text.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Text.Analyzers.1.2.0-beta2\analyzers\dotnet\cs\Text.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.3\analyzers\dotnet\Microsoft.CodeAnalysis.VersionCheckAnalyzer.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.CodeQuality.Analyzers.2.9.3\analyzers\dotnet\cs\Humanizer.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.CodeQuality.Analyzers.2.9.3\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.CodeQuality.Analyzers.2.9.3\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.NetCore.Analyzers.2.9.3\analyzers\dotnet\cs\Microsoft.NetCore.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.NetCore.Analyzers.2.9.3\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.NetFramework.Analyzers.2.9.3\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.NetFramework.Analyzers.2.9.3\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Text.Analyzers.2.6.4\analyzers\dotnet\cs\Text.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Text.Analyzers.2.6.4\analyzers\dotnet\cs\Text.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Margins\TopMarginUserControl.xaml">
@@ -384,21 +420,17 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Desktop.Analyzers.1.2.0-beta2\build\Desktop.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Desktop.Analyzers.1.2.0-beta2\build\Desktop.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.ApiDesignGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.ApiDesignGuidelines.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.ApiDesignGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.ApiDesignGuidelines.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Maintainability.Analyzers.1.2.0-beta2\build\Microsoft.Maintainability.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Maintainability.Analyzers.1.2.0-beta2\build\Microsoft.Maintainability.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.QualityGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.QualityGuidelines.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.QualityGuidelines.Analyzers.1.2.0-beta2\build\Microsoft.QualityGuidelines.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\System.Collections.Immutable.Analyzers.1.2.0-beta2\build\System.Collections.Immutable.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Collections.Immutable.Analyzers.1.2.0-beta2\build\System.Collections.Immutable.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\System.Resources.Analyzers.1.2.0-beta2\build\System.Resources.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Resources.Analyzers.1.2.0-beta2\build\System.Resources.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\System.Runtime.Analyzers.1.2.0-beta2\build\System.Runtime.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Runtime.Analyzers.1.2.0-beta2\build\System.Runtime.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\System.Runtime.InteropServices.Analyzers.1.2.0-beta2\build\System.Runtime.InteropServices.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Runtime.InteropServices.Analyzers.1.2.0-beta2\build\System.Runtime.InteropServices.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\System.Threading.Tasks.Analyzers.1.2.0-beta2\build\System.Threading.Tasks.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Threading.Tasks.Analyzers.1.2.0-beta2\build\System.Threading.Tasks.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\Text.Analyzers.1.2.0-beta2\build\Text.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Text.Analyzers.1.2.0-beta2\build\Text.Analyzers.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.targets'))" />
     <Error Condition="!Exists('..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.14.0.23-pre\build\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.14.0.23-pre\build\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.14.0.23-pre\build\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.14.0.23-pre\build\Microsoft.VisualStudio.Sdk.BuildTasks.14.0.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.3\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.3\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.CodeQuality.Analyzers.2.9.3\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeQuality.Analyzers.2.9.3\build\Microsoft.CodeQuality.Analyzers.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.NetCore.Analyzers.2.9.3\build\Microsoft.NetCore.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.NetCore.Analyzers.2.9.3\build\Microsoft.NetCore.Analyzers.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.NetFramework.Analyzers.2.9.3\build\Microsoft.NetFramework.Analyzers.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.3\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props'))" />
+    <Error Condition="!Exists('..\..\packages\Text.Analyzers.2.6.4\build\Text.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Text.Analyzers.2.6.4\build\Text.Analyzers.props'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\..\packages\Microsoft.VSSDK.BuildTools.14.3.25420\build\Microsoft.VSSDK.BuildTools.targets')" />
   <Import Project="..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />

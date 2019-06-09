@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 using Microsoft.HockeyApp;
 using Microsoft.HockeyApp.Model;
 
@@ -21,8 +23,13 @@ namespace Gardiner.XsltTools.Logging
             _options.PropertyChanged += OptionsOnPropertyChanged;
         }
 
-        public static async Task<HockeyClientTelemetryProvider> Create(Options options)
+        public static async Task<HockeyClientTelemetryProvider> Create([NotNull] Options options)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             var provider = new HockeyClientTelemetryProvider(options);
 
             await provider.Configure().ConfigureAwait(true);
@@ -109,8 +116,13 @@ namespace Gardiner.XsltTools.Logging
             _hockeyClient?.TrackEvent(eventName);
         }
 
-        public void LogException(Exception ex)
+        public void LogException([NotNull] Exception ex)
         {
+            if (ex == null)
+            {
+                throw new ArgumentNullException(nameof(ex));
+            }
+
             // TrackException is not supported with WPF yet, so use HandleException instead
             // Only report exceptions from our code
             if (ex.ToString().Contains("Gardiner"))

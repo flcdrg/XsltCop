@@ -76,7 +76,9 @@ namespace Gardiner.XsltTools
                     var result = checker.CheckFile(fileName);
 
                     if (result == null)
+                    {
                         return;
+                    }
 
                     var dte = (DTE) ServiceProvider.GetService(typeof(DTE));
 
@@ -95,7 +97,9 @@ namespace Gardiner.XsltTools
                     ErrorListService.ProcessLintingResults(result);
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 Telemetry.Log(ex);
             }
