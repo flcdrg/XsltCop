@@ -86,6 +86,10 @@ namespace Gardiner.XsltTools
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync();
             var solService = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
+            if (solService == null)
+            {
+                throw new ArgumentNullException(nameof(solService));
+            }
 
             ErrorHandler.ThrowOnFailure(solService.GetProperty((int)__VSPROPID.VSPROPID_IsSolutionOpen, out object value));
 
