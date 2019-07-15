@@ -43,15 +43,15 @@ namespace Gardiner.XsltTools
     ///         &gt; in .vsixmanifest file.
     ///     </para>
     /// </remarks>
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)]
     [ProvideOptionPage(typeof(Options), "XsltCop", "General", 101, 111, true, new[] { "xslt", "xpath" }, ProvidesLocalizedCategoryName = false)]
     // Info on this package for Help/About
     [Guid(PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly",
         Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string)]
-    [ProvideAutoLoad(VSConstants.UICONTEXT.CodeWindow_string)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.CodeWindow_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed partial class XsltToolPackage : AsyncPackage, IVsSolutionEvents, IVsUpdateSolutionEvents2
     {
         /// <summary>
@@ -95,6 +95,7 @@ namespace Gardiner.XsltTools
 
             try
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 object o;
                 pHierProj.GetProperty((uint) VSConstants.VSITEMID.Root, (int) __VSHPROPID.VSHPROPID_Name, out o);
                 var name = o as string;
@@ -122,6 +123,8 @@ namespace Gardiner.XsltTools
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             _dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
             Options = (Options)GetDialogPage(typeof(Options));
 
@@ -155,6 +158,7 @@ namespace Gardiner.XsltTools
                 {
                     return;
                 }
+                ThreadHelper.ThrowIfNotOnUIThread();
 
                 var hwnd = new IntPtr(_dte.MainWindow.HWnd);
                 var window = (System.Windows.Window)HwndSource.FromHwnd(hwnd)?.RootVisual;

@@ -74,4 +74,7 @@
   <Rules AnalyzerId="Microsoft.ApiDesignGuidelines.Analyzers" RuleNamespace="Microsoft.ApiDesignGuidelines.Analyzers">
     <Rule Id="CA1724" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.VisualStudio.SDK.Analyzers" RuleNamespace="Microsoft.VisualStudio.SDK.Analyzers">
+    <Rule Id="VSSDK006" Action="None" />
+  </Rules>
 </RuleSet>
