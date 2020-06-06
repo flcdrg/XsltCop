@@ -22,6 +22,16 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    - name: Cache
+      uses: actions/cache@v2.0.0
+      with:
+        # A list of files, directories, and wildcard patterns to cache and restore
+        path: packages
+        # An explicit key for restoring and saving the cache
+        key: nuget-packages-${{ hashFiles('**packages.config') }}
+        # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
+        restore-keys: nuget-packages-
+        
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
       #with:
