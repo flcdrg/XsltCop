@@ -30,6 +30,9 @@ jobs:
         # Version of Visual Studio to search; defaults to latest if not specified
         #vs-version: # optional
     
+    - name: NuGet Restore
+      run: nuget restore
+      
     # Runs a single command using the runners shell
     - name: Build
       run: msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
