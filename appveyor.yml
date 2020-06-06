@@ -1,3 +1,14 @@
+image:
+  - Visual Studio 2015
+
+branches:
+  only:
+  - master
+  
+cache:
+  - packages -> **\packages.config
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+
 install:
   - choco install gitversion.portable -pre -y
   - ps: (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
