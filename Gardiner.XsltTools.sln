@@ -1,12 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gardiner.XsltTools", "src\Gardiner.XsltTools\Gardiner.XsltTools.csproj", "{0602540B-2EE9-4A21-8450-2901822C7B00}"
-	ProjectSection(ProjectDependencies) = postProject
-		{29058452-9804-4204-93EF-BD55CE1ED0FA} = {29058452-9804-4204-93EF-BD55CE1ED0FA}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gardiner.XsltTools.Tests", "src\Gardiner.XsltTools.Tests\Gardiner.XsltTools.Tests.csproj", "{F489DCFC-9576-4BCA-B246-79802728595A}"
 EndProject
@@ -14,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gardiner.XsltTools.Weavers", "src\Gardiner.XsltTools.Weavers\Gardiner.XsltTools.Weavers.csproj", "{29058452-9804-4204-93EF-BD55CE1ED0FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,12 +26,11 @@ Global
 		{F489DCFC-9576-4BCA-B246-79802728595A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F489DCFC-9576-4BCA-B246-79802728595A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F489DCFC-9576-4BCA-B246-79802728595A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29058452-9804-4204-93EF-BD55CE1ED0FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29058452-9804-4204-93EF-BD55CE1ED0FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29058452-9804-4204-93EF-BD55CE1ED0FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29058452-9804-4204-93EF-BD55CE1ED0FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B1670776-4F3E-4B8F-AE60-C13D7EF9DFEE}
 	EndGlobalSection
 EndGlobal

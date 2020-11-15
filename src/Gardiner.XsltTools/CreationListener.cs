@@ -101,7 +101,8 @@ namespace Gardiner.XsltTools
             catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                Telemetry.Log(ex);
+                Debug.WriteLine(ex);
+                // Telemetry.Log(ex);
             }
         }
     }
