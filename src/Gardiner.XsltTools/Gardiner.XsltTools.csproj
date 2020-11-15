@@ -74,7 +74,7 @@
     </Compile>
     <Compile Include="ProcessHierarchy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Gardiner.XsltToolsPackage.cs" />
+    <Compile Include="XsltToolsPackage.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,7 +89,6 @@
     <Compile Include="Utils\IVsExtensions.cs" />
     <Compile Include="Utils\ProjectHelpers.cs" />
     <Compile Include="Utils\VSPackage.cs" />
-    <Compile Include="VsVersion.cs" />
     <Compile Include="XPathTreeBuilder.cs" />
     <Compile Include="XsltChecker.cs" />
     <Compile Include="XsltToolPackage.IVsSolutionEvents.cs" />
