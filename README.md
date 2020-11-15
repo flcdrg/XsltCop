@@ -1,6 +1,6 @@
 # XsltCop
 
-A Visual Studio 2015 extension to support enhancements for working with XSLT files
+A Visual Studio 2019 extension to support enhancements for working with XSLT files
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3odnsroijv0k813i?svg=true)](https://ci.appveyor.com/project/DavidGardiner/xsltcop)
 

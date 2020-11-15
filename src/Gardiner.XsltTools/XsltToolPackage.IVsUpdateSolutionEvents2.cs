@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Gardiner.XsltTools
 {
-    public sealed partial class XsltToolPackage
+    public sealed partial class XsltToolsPackage
     {
         int IVsUpdateSolutionEvents.UpdateSolution_Begin(ref int pfCancelUpdate)
         {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 using JetBrains.Annotations;
 
@@ -9,12 +11,9 @@ using Microsoft.Language.Xml;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
-using PropertyChanged;
-
 namespace Gardiner.XsltTools.Margins
 {
-    [ImplementPropertyChanged]
-    public class TopMarginViewModel
+    public class TopMarginViewModel: INotifyPropertyChanged
     {
         private readonly IWpfTextView _textView;
         private readonly ITextBuffer _dataBuffer;
@@ -55,6 +54,7 @@ namespace Gardiner.XsltTools.Margins
 
                 Debug.WriteLine($"SelectedValue {value}");
                 _selectedValue = value;
+                OnPropertyChanged();
                 TemplateListSelectionChanged(value);
             }
         }
@@ -65,7 +65,7 @@ namespace Gardiner.XsltTools.Margins
             var bufferPosition = e.NewPosition.BufferPosition;
             var position = bufferPosition.Position;
 
-            var elt = GetDescendants(_syntax)
+            IXmlElementSyntax elt = GetDescendants(_syntax)
                 .OfType<XmlElementSyntax>()
                 .FirstOrDefault(n =>
                 {
@@ -80,7 +80,7 @@ namespace Gardiner.XsltTools.Margins
             // Update selected item in list
             if (elt != null)
             {
-                item = CreateTemplateModel(elt.Attributes.ToList(), elt);
+                item = CreateTemplateModel(elt.Attributes.ToList(), (XmlElementSyntax) elt);
             }
             _dontUpdateCaret = true;
             SelectedValue = item;
@@ -105,7 +105,7 @@ namespace Gardiner.XsltTools.Margins
             var list = GetDescendants(_syntax)
                 .OfType<XmlElementSyntax>()
                 .Where(n => n.Name == "template")
-                .Select(n => CreateTemplateModel(n.Attributes.ToList(), n))
+                .Select(n => CreateTemplateModel(((IXmlElementSyntax)n).Attributes.ToList(), n))
                 //.Where(m => m.Name != null && m.Mode != null && m.Match != null)
                 .ToList();
 
@@ -136,13 +136,13 @@ namespace Gardiner.XsltTools.Margins
             }
         }
 
-        private static TemplateModel CreateTemplateModel(List<KeyValuePair<string, string>> attributes, XmlElementSyntax name)
+        private static TemplateModel CreateTemplateModel(IList<XmlAttributeSyntax> attributes, SyntaxNode name)
         {
             var item = new TemplateModel()
             {
-                Mode = attributes.Where(a => a.Key == "mode").Select(a => a.Value).FirstOrDefault(),
-                Name = attributes.Where(a => a.Key == "name").Select(a => a.Value).FirstOrDefault(),
-                Match = attributes.Where(a => a.Key == "match").Select(a => a.Value).FirstOrDefault(),
+                Mode = attributes.Where(a => a.Name == "mode").Select(a => a.Value).FirstOrDefault(),
+                Name = attributes.Where(a => a.Name == "name").Select(a => a.Value).FirstOrDefault(),
+                Match = attributes.Where(a => a.Name == "match").Select(a => a.Value).FirstOrDefault(),
                 Start = name.Start + name.GetLeadingTriviaWidth()
             };
             return item;
@@ -162,6 +162,14 @@ namespace Gardiner.XsltTools.Margins
             var snapshotPoint = new SnapshotPoint(_dataBuffer.CurrentSnapshot, key.Start);
             _textView.Caret.MoveTo(snapshotPoint);
             _textView.Caret.EnsureVisible();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
