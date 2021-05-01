@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "dependencies": {
+    ".NETFramework,Version=v4.6.1": {
+      "Nerdbank.GitVersioning": {
+        "type": "Direct",
+        "requested": "[3.3.37, )",
+        "resolved": "3.3.37",
+        "contentHash": "YlDKV/gSHQGDThWSGqVyPfKeNP/kx1fj/NPFFgGc/cxzgIbXv4jtYOcbFOz3ZIeAKtpCcSAmVNDOikBs3OxI/A=="
+      },
+      "gardiner.xslttools": {
+        "type": "Project"
+      }
+    },
+    ".NETFramework,Version=v4.6.1/win": {},
+    ".NETFramework,Version=v4.6.1/win-x64": {},
+    ".NETFramework,Version=v4.6.1/win-x86": {}
+  }
+}
