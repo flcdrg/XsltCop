@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -10,20 +8,28 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: windows-latest
+    outputs:
+      GitAssemblyInformationalVersion: ${{ steps.gitversion.outputs.GitAssemblyInformationalVersion }}
+      GitBuildVersion: ${{ steps.gitversion.outputs.GitBuildVersion }}
+      GitBuildVersionSimple: ${{ steps.gitversion.outputs.GitBuildVersionSimple }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
-    - name: Cache
-      uses: actions/cache@v2.0.0
+    - uses: actions/cache@v2
       with:
         # A list of files, directories, and wildcard patterns to cache and restore
         path: packages
@@ -31,24 +37,99 @@ jobs:
         key: nuget-packages-${{ hashFiles('**packages.config') }}
         # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
         restore-keys: nuget-packages-
-        
+    
+    - name: nuget restore
+      run: nuget restore -Verbosity quiet
+
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
-      #with:
-        # Folder location of where vswhere.exe is located if a self-hosted agent
-        #vswhere-path: # optional
-        # Version of Visual Studio to search; defaults to latest if not specified
-        #vs-version: # optional
     
-    - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1
-      with:
-        # NuGet version to install. Can be `latest`, `preview`, a concrete version like `5.3.1`, or a semver range specifier like `5.x`.
-        nuget-version: latest
-
-    - name: NuGet Restore
-      run: nuget restore
-      
-    # Runs a single command using the runners shell
     - name: Build
-      run: msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+      id: build
+      run: |
+        msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+
+    - name: gitversion
+      id: gitversion
+      run: |
+        dir env:
+        
+        echo "::set-output name=GitAssemblyInformationalVersion::$($env:GitAssemblyInformationalVersion)"
+        echo "::set-output name=GitBuildVersion::$($env:GitBuildVersion)"
+        echo "::set-output name=GitBuildVersionSimple::$($env:GitBuildVersionSimple)"
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        # Artifact name
+        name: 'vsix'
+        # A file, directory or wildcard pattern that describes what to upload
+        path: '**/*.vsix'
+
+    # - name: Dump steps context
+    #   env:
+    #     STEPS_CONTEXT: ${{ toJson(steps) }}
+    #   run: echo "$STEPS_CONTEXT"
+
+  update_release_draft:
+    name: Update release draft
+    runs-on: ubuntu-latest
+    needs: [build]
+    env:
+      GitAssemblyInformationalVersion: ${{ needs.build.outputs.GitAssemblyInformationalVersion }}
+      GitBuildVersion: ${{ needs.build.outputs.GitBuildVersion }}
+      GitBuildVersionSimple: ${{ needs.build.outputs.GitBuildVersionSimple }}
+
+    if: github.ref == 'refs/heads/master' # Running this job only for master branch
+    steps:
+      # - name: Dump job context
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(job) }}
+      #   run: echo "$JOB_CONTEXT"
+      # - name: Dump needs context
+      #   env:
+      #     NEEDS_CONTEXT: ${{ toJson(needs) }}
+      #   run: echo "$NEEDS_CONTEXT"
+
+      - uses: release-drafter/release-drafter@v5
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ needs.build.outputs.GitBuildVersionSimple }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: vsix
+          
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Display environment
+        run: 'printenv | sort'
+
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+
+      - name: Remove existing release asset
+        uses: flcdrg/remove-release-asset-action@v1
+        with:
+          # The release id to remove asset from
+          release_id: ${{ steps.create_release.outputs.id }}
+          # The name of the asset you want to remove
+          asset_name: Gardiner.XsltTools.vsix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: src/Gardiner.XsltTools/bin/Release/Gardiner.XsltTools.vsix
+          asset_name: Gardiner.XsltTools.vsix
+          asset_content_type: application/octet-stream
