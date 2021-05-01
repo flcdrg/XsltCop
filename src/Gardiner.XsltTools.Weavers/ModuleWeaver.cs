@@ -28,7 +28,8 @@ namespace Gardiner.XsltTools.Weavers
             var loggerTypeDefinition = ModuleDefinition.Types.First(x => x.Name == "Telemetry");
             LogMethod = ModuleDefinition.ImportReference(loggerTypeDefinition.FindMethod("Log", "Exception"));
 
-            var msCoreLibDefinition = AssemblyResolver.Resolve("mscorlib");
+            var mscorelibReference = new AssemblyNameReference("mscorlib", new Version(4, 0, 0, 0));
+            var msCoreLibDefinition = AssemblyResolver.Resolve(mscorelibReference);
             ExceptionType = ModuleDefinition.ImportReference(msCoreLibDefinition.MainModule.Types.First(x => x.Name == "Exception"));
             foreach (var type in ModuleDefinition
                 .GetTypes()

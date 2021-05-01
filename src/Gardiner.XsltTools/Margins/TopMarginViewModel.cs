@@ -9,11 +9,8 @@ using Microsoft.Language.Xml;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
-using PropertyChanged;
-
 namespace Gardiner.XsltTools.Margins
 {
-    [ImplementPropertyChanged]
     public class TopMarginViewModel
     {
         private readonly IWpfTextView _textView;

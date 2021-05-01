@@ -16,7 +16,7 @@ namespace Gardiner.XsltTools.Tests
         [Test]
         public void Thing()
         {
-            var localPath = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            var localPath = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().Location).LocalPath);
             var text = File.ReadAllText(Path.Combine(localPath, @"..\..\..\..\Demo\MyXslProject\Second.xslt"));
             XmlDocumentSyntax syntax = Parser.ParseText(text);
             //ClassifierVisitor.Visit(syntax, 0, text.Length, ResultCollector);
