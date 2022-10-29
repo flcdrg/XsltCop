@@ -45,6 +45,9 @@ jobs:
 
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
+
+    - name: dependencies
+      run: choco install dotnet4.6.1-devpack
     
     - name: Build
       id: build
