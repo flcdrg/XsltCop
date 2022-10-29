@@ -119,7 +119,7 @@ jobs:
         run: echo "$STEPS_CONTEXT"
 
       - name: Remove existing release asset
-        uses: flcdrg/remove-release-asset-action@v1
+        uses: flcdrg/remove-release-asset-action@v2
         with:
           # The release id to remove asset from
           release_id: ${{ steps.create_release.outputs.id }}
