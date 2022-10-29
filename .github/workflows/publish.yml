@@ -15,7 +15,7 @@ jobs:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       #   run: echo "$GITHUB_CONTEXT"
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Download Assets
         uses: i3h/download-release-asset@v1.3.3
